@@ -73,8 +73,8 @@
 .master-shell .filter-toggle span { font-size:18px; line-height:1; }
 .master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color:#514820; color:#f5c542; background:#181712; }
 /* O estado React atual usa active=true no estado inicial; aqui active representa filtro fechado. */
-.master-shell .barbearias-filters:has(.filter-toggle.active) .filter-controls { display:none; }
-.master-shell .barbearias-filters:has(.filter-toggle:not(.active)) .filter-controls { display:grid; }
+.master-shell .barbearias-filters:has(.filter-toggle.active) .filter-controls { display:grid; }
+.master-shell .barbearias-filters:has(.filter-toggle:not(.active)) .filter-controls { display:none; }
 
 @media (max-width:800px){.master-shell .barbearias-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.master-shell .filter-controls{grid-template-columns:1fr 1fr}.master-shell .clear-filters{grid-column:1 / -1}.master-shell .vision-benefits{grid-template-columns:1fr}.master-shell .vision-panel h1{font-size:38px}}
 @media (max-width:560px){.master-shell .barbearias-panel{padding:100px 14px 32px}.master-shell .barbearias-header h1{font-size:25px}.master-shell .barbearias-filters{padding:10px;border-radius:15px}.master-shell .compact-filter-row{grid-template-columns:1fr auto}.master-shell .filter-toggle{width:38px;min-width:38px}.master-shell .filter-controls{grid-template-columns:1fr}.master-shell .clear-filters{grid-column:auto}.master-shell .barbearias-empty-filter{min-height:280px;padding:32px 18px}.master-shell .barbearias-grid{grid-template-columns:1fr}.master-shell .barbearia-card{padding:16px}.master-shell .vision-panel{padding-top:120px}.master-shell .vision-panel h1{font-size:32px}.master-shell .master-modal{padding:18px;border-radius:15px}.master-shell .modal-actions{flex-direction:column-reverse}.master-shell .modal-actions>*{width:100%}}
