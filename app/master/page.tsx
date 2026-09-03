@@ -78,6 +78,7 @@ export default function MasterPage() {
       <aside className={`master-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
         <div className="sidebar-content">
           <button className="sidebar-logout" type="button" onClick={() => setMenuOpen(false)}>Barbearias</button>
+          <button className="sidebar-logout" type="button" onClick={() => setMenuOpen(false)}>Minha Barbearia</button>
           <button className="sidebar-logout" onClick={logout} type="button">Sair</button>
         </div>
       </aside>
