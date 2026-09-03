@@ -92,9 +92,40 @@ button, input, select { font: inherit; }
 .vision-footer-card h2 { margin: 0 0 7px; font-size: 21px; }
 .vision-footer-card p { margin: 0; color: #8f8f97; line-height: 1.5; }
 .create-barbershop-button.secondary { flex: 0 0 auto; }
+/* Barbershop auth: exact visual language of Master Login */
+.barbershop-auth-panel { min-height: 100vh; display: grid; place-items: center; padding: 32px 24px; background: radial-gradient(circle at top, #252525 0, #0b0b0d 45%); }
+.barbershop-auth-card { position: relative; width: 100%; max-width: 780px; padding: 34px; border: 1px solid #29292d; border-radius: 24px; background: rgba(18,18,20,.97); box-shadow: 0 24px 80px rgba(0,0,0,.45); }
+.barbershop-auth-card::before { content: ""; display: block; width: 100%; height: 2px; margin: -34px 0 30px; border-radius: 999px; background: linear-gradient(90deg, transparent, #f5c542, transparent); opacity: .85; }
+.auth-heading { text-align: center; margin-bottom: 26px; }
+.auth-heading .vision-kicker { display: block; margin-bottom: 9px; }
+.auth-heading h1 { margin: 0; font-size: 25px; letter-spacing: -.4px; }
+.auth-heading p { max-width: 540px; margin: 9px auto 0; color: #8f8f97; font-size: 14px; line-height: 1.5; }
+.auth-mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; margin-bottom: 26px; border: 1px solid #202024; border-radius: 12px; background: #101012; }
+.auth-mode-tabs button { border: 0; border-radius: 9px; min-height: 40px; padding: 10px 12px; color: #8f8f97; background: transparent; font-weight: 700; cursor: pointer; }
+.auth-mode-tabs button.active { color: #111; background: #f5c542; }
+.auth-mode-tabs button:hover:not(.active) { color: #f5c542; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; }
+.form-field { display: grid; gap: 8px; margin-bottom: 15px; }
+.form-field.full { grid-column: 1 / -1; }
+.form-field > span { color: #d5d5d9; font-size: 13px; font-weight: 600; }
+.form-field input { width: 100%; min-height: 46px; border: 1px solid #303036; border-radius: 11px; padding: 12px 14px; color: #fff; background: #111114; outline: none; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+.form-field input::placeholder { color: #66666e; }
+.form-field input:focus { border-color: #f5c542; background: #121215; box-shadow: 0 0 0 3px rgba(245,197,66,.08); }
+.cep-action { display: flex; align-items: end; margin-bottom: 15px; }
+.cep-action button { width: 100%; min-height: 46px; padding: 0 15px; border: 1px solid #514820; border-radius: 11px; color: #f5c542; background: #181712; font-weight: 800; cursor: pointer; }
+.cep-action button:hover { border-color: #f5c542; background: rgba(245,197,66,.08); }
+.cep-action button:disabled { opacity: .55; cursor: wait; }
+.auth-submit { width: 100%; min-height: 48px; margin-top: 4px; padding: 13px 18px; border: 0; border-radius: 11px; color: #111; background: #f5c542; font-weight: 800; cursor: pointer; box-shadow: 0 10px 28px rgba(245,197,66,.1); transition: background .18s ease, transform .18s ease, box-shadow .18s ease; }
+.auth-submit:hover { background: #ffd866; transform: translateY(-1px); box-shadow: 0 14px 32px rgba(245,197,66,.16); }
+.auth-submit:disabled { opacity: .6; cursor: wait; transform: none; }
+.auth-feedback { margin-top: 15px; padding: 12px 13px; border: 1px solid #514820; border-radius: 10px; background: #211f14; color: #f5d66f; font-size: 13px; line-height: 1.45; }
+.login-fields { max-width: 440px; margin: 0 auto; }
+.back-link { display: inline-flex; align-items: center; margin-bottom: 18px; padding: 0; border: 0; color: #8f8f97; background: transparent; font-size: 13px; font-weight: 700; cursor: pointer; }
+.back-link:hover { color: #f5c542; }
 @media (max-width: 760px) {
   .vision-benefits { grid-template-columns: 1fr; }
   .vision-footer-card { align-items: flex-start; flex-direction: column; }
+  .barbershop-auth-card { max-width: 620px; }
 }
 @media (max-width: 560px) {
   .master-header { height: 70px; padding: 0 14px; }
@@ -119,4 +150,12 @@ button, input, select { font: inherit; }
   .vision-benefits article { padding: 22px; }
   .vision-footer-card { padding: 24px; }
   .create-barbershop-button { width: 100%; }
+  .barbershop-auth-panel { padding: 18px 12px; }
+  .barbershop-auth-card { padding: 26px 18px; border-radius: 20px; }
+  .barbershop-auth-card::before { margin: -26px 0 24px; }
+  .auth-heading h1 { font-size: 21px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-field.full { grid-column: auto; }
+  .cep-action { margin-top: -4px; margin-bottom: 15px; }
+  .auth-submit { min-height: 47px; }
 }
