@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 
 export default function MasterPage() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,16 +22,37 @@ export default function MasterPage() {
   }
 
   return (
-    <main className="auth-shell">
-      <section className="auth-card">
-        <div className="brand">
-          <div className="brand-mark">Barba<span>10</span></div>
-          <p>Painel Master</p>
+    <main className="master-shell">
+      <header className="master-header">
+        <div className="master-brand" aria-label="Barba10 — Painel Master">
+          <div className="master-logo">Barba<span>10</span></div>
+          <div className="master-slogan">Painel Master</div>
         </div>
-        <p style={{ color: "#d5d5d9", textAlign: "center" }}>
-          Acesso autorizado{email ? ` para ${email}` : ""}.
-        </p>
-        <button className="submit" onClick={logout} type="button">Sair</button>
+
+        <button
+          className="menu-button"
+          type="button"
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </header>
+
+      <aside className={`master-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
+        <div className="sidebar-content">
+          <button className="sidebar-logout" onClick={logout} type="button">
+            Sair
+          </button>
+        </div>
+      </aside>
+
+      <section className="master-content">
+        <h1>Painel Master</h1>
+        <p>{email ? `Acesso autorizado para ${email}.` : "Acesso autorizado."}</p>
       </section>
     </main>
   );
