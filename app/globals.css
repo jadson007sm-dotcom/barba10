@@ -1,0 +1,21 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { font-family: Arial, Helvetica, sans-serif; background: #0b0b0d; color: #fff; }
+button, input { font: inherit; }
+.auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at top, #252525 0, #0b0b0d 45%); }
+.auth-card { width: 100%; max-width: 430px; padding: 34px; border: 1px solid #29292d; border-radius: 24px; background: rgba(18,18,20,.96); box-shadow: 0 24px 80px rgba(0,0,0,.45); }
+.brand { text-align: center; margin-bottom: 28px; }
+.brand-mark { font-size: 34px; font-weight: 800; letter-spacing: -1px; }
+.brand-mark span { color: #f5c542; }
+.brand p { color: #a6a6ad; margin: 8px 0 0; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; margin-bottom: 24px; border-radius: 12px; background: #101012; }
+.tab { border: 0; border-radius: 9px; padding: 11px; color: #8f8f97; background: transparent; cursor: pointer; }
+.tab.active { color: #111; background: #f5c542; font-weight: 700; }
+.field { display: grid; gap: 8px; margin-bottom: 15px; }
+.field label { color: #d5d5d9; font-size: 14px; }
+.field input { width: 100%; border: 1px solid #303036; border-radius: 11px; padding: 13px 14px; color: #fff; background: #111114; outline: none; }
+.field input:focus { border-color: #f5c542; }
+.submit { width: 100%; margin-top: 5px; padding: 14px; border: 0; border-radius: 11px; color: #111; background: #f5c542; font-weight: 800; cursor: pointer; }
+.submit:disabled { opacity: .6; cursor: wait; }
+.message { margin-top: 15px; padding: 11px; border-radius: 10px; background: #211f14; color: #f5d66f; font-size: 14px; line-height: 1.4; }
+.foot { text-align: center; margin-top: 22px; color: #77777f; font-size: 12px; }
