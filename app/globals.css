@@ -2,7 +2,6 @@
 html, body { margin: 0; min-height: 100%; }
 body { font-family: Arial, Helvetica, sans-serif; background: #0b0b0d; color: #fff; }
 button, input, select { font: inherit; }
-
 .auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at top, #252525 0, #0b0b0d 45%); }
 .auth-card { width: 100%; max-width: 430px; padding: 34px; border: 1px solid #29292d; border-radius: 24px; background: rgba(18,18,20,.96); box-shadow: 0 24px 80px rgba(0,0,0,.45); }
 .brand { text-align: center; margin-bottom: 28px; }
@@ -20,7 +19,6 @@ button, input, select { font: inherit; }
 .submit:disabled { opacity: .6; cursor: wait; }
 .message { margin-top: 15px; padding: 11px; border-radius: 10px; background: #211f14; color: #f5d66f; font-size: 14px; line-height: 1.4; }
 .foot { text-align: center; margin-top: 22px; color: #77777f; font-size: 12px; }
-
 .master-shell { min-height: 100vh; background: #0b0b0d; }
 .master-header { position: fixed; inset: 0 0 auto 0; z-index: 50; height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; border-bottom: 1px solid #29292d; background: rgba(12, 12, 14, .97); box-shadow: 0 8px 30px rgba(0,0,0,.22); }
 .master-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
@@ -37,40 +35,42 @@ button, input, select { font: inherit; }
 .sidebar-logout:hover { border-color: #f5c542; color: #f5c542; }
 .sidebar-logout:last-child { color: #ef4444; }
 .sidebar-logout:last-child:hover { border-color: #ef4444; color: #ef4444; }
-
 .barbearias-panel { min-height: 100vh; padding: 112px 24px 40px; max-width: 1180px; margin: 0 auto; }
-.barbearias-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.barbearias-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .barbearias-header h1 { margin: 0; font-size: 30px; letter-spacing: -.5px; }
 .barbearias-count { min-width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #34343a; border-radius: 12px; background: #151518; color: #f5c542; font-weight: 800; }
-.barbearias-filters { padding: 16px; border: 1px solid #29292d; border-radius: 18px; background: linear-gradient(145deg, rgba(25,25,29,.98), rgba(16,16,19,.98)); box-shadow: 0 16px 45px rgba(0,0,0,.2); }
-.smart-search { min-height: 52px; display: flex; align-items: center; gap: 11px; padding: 0 14px; border: 1px solid #34343a; border-radius: 13px; background: #101012; transition: border-color .18s ease, box-shadow .18s ease; }
+.barbearias-filters { padding: 10px; border: 1px solid #29292d; border-radius: 15px; background: #121215; box-shadow: 0 12px 35px rgba(0,0,0,.16); }
+.compact-filter-row { display: flex; align-items: center; gap: 8px; }
+.smart-search { min-height: 46px; flex: 1; display: flex; align-items: center; gap: 10px; padding: 0 12px; border: 1px solid #34343a; border-radius: 11px; background: #101012; transition: border-color .18s ease, box-shadow .18s ease; }
 .smart-search:focus-within { border-color: #f5c542; box-shadow: 0 0 0 3px rgba(245,197,66,.08); }
-.smart-search > span { color: #9b9ba3; font-size: 24px; line-height: 1; }
+.smart-search > span { color: #9b9ba3; font-size: 22px; line-height: 1; }
 .smart-search input { flex: 1; min-width: 0; border: 0; outline: 0; color: #fff; background: transparent; }
 .smart-search input::placeholder { color: #77777f; }
-.clear-search { width: 28px; height: 28px; border: 0; border-radius: 8px; color: #aaaab1; background: #252529; cursor: pointer; font-size: 20px; line-height: 1; }
+.clear-search { width: 27px; height: 27px; border: 0; border-radius: 8px; color: #aaaab1; background: #252529; cursor: pointer; font-size: 19px; line-height: 1; }
 .clear-search:hover { color: #fff; }
-.filter-controls { display: flex; align-items: end; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.filter-toggle { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid #34343a; border-radius: 11px; color: #d5d5d9; background: #18181c; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.filter-toggle:hover, .filter-toggle.active { border-color: #f5c542; color: #f5c542; }
+.filter-toggle b { min-width: 19px; height: 19px; display: grid; place-items: center; padding: 0 5px; border-radius: 999px; color: #111; background: #f5c542; font-size: 11px; }
+.filter-controls { display: flex; align-items: end; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #29292d; flex-wrap: wrap; }
 .filter-select { flex: 1 1 180px; display: grid; gap: 6px; }
 .filter-select span { color: #8f8f97; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-.filter-select select { width: 100%; height: 44px; padding: 0 12px; border: 1px solid #34343a; border-radius: 11px; outline: none; color: #fff; background: #151518; cursor: pointer; }
+.filter-select select { width: 100%; height: 42px; padding: 0 12px; border: 1px solid #34343a; border-radius: 10px; outline: none; color: #fff; background: #151518; cursor: pointer; }
 .filter-select select:focus { border-color: #f5c542; }
-.clear-filters { height: 44px; padding: 0 15px; border: 1px solid #34343a; border-radius: 11px; color: #d5d5d9; background: #18181c; font-weight: 700; cursor: pointer; }
+.clear-filters { height: 42px; padding: 0 15px; border: 1px solid #34343a; border-radius: 10px; color: #d5d5d9; background: #18181c; font-weight: 700; cursor: pointer; }
 .clear-filters:hover { border-color: #f5c542; color: #f5c542; }
 .clear-filters.primary { margin-top: 16px; border-color: #f5c542; color: #111; background: #f5c542; }
 .clear-filters.primary:hover { color: #111; background: #ffd866; }
-.barbearias-empty-filter { margin-top: 20px; padding: 52px 24px; border: 1px dashed #34343a; border-radius: 18px; text-align: center; background: rgba(17,17,20,.55); }
+.barbearias-empty-filter { margin-top: 16px; padding: 52px 24px; border: 1px dashed #34343a; border-radius: 18px; text-align: center; background: rgba(17,17,20,.55); }
 .empty-filter-icon { width: 48px; height: 48px; display: grid; place-items: center; margin: 0 auto 14px; border: 1px solid #34343a; border-radius: 14px; color: #f5c542; background: #151518; font-size: 25px; }
 .barbearias-empty-filter h2 { margin: 0; font-size: 18px; }
 .barbearias-empty-filter p { max-width: 470px; margin: 8px auto 0; color: #8f8f97; line-height: 1.5; }
-.barbearias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 20px; }
+.barbearias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 16px; }
 .barbearia-card { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px; border: 1px solid #29292d; border-radius: 16px; background: #111114; }
 .barbearia-card h2 { margin: 0 0 5px; font-size: 17px; }
 .barbearia-card p { margin: 0; color: #85858d; font-size: 13px; }
 .status-badge { padding: 6px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
 .status-badge.ativa { color: #9be7b0; background: rgba(61,160,85,.14); }
 .status-badge.inativa { color: #f0a5a5; background: rgba(220,70,70,.12); }
-
 @media (max-width: 560px) {
   .master-header { height: 70px; padding: 0 14px; }
   .master-sidebar { top: 70px; }
@@ -80,7 +80,9 @@ button, input, select { font: inherit; }
   .menu-button { width: 42px; height: 42px; }
   .barbearias-panel { padding: 94px 14px 30px; }
   .barbearias-header h1 { font-size: 26px; }
-  .barbearias-filters { padding: 12px; }
+  .barbearias-filters { padding: 8px; }
+  .compact-filter-row { align-items: stretch; }
+  .filter-toggle { padding: 0 11px; }
   .filter-controls { display: grid; grid-template-columns: 1fr; }
   .filter-select { min-width: 0; }
   .clear-filters { width: 100%; }
