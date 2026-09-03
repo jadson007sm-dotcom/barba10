@@ -1,0 +1,32 @@
+.master-shell { min-height: 100vh; background: radial-gradient(circle at 50% -12%, #242424 0, #0b0b0d 34%); color: #fff; }
+.master-shell .barbearias-panel { max-width: 1180px; min-height: 100vh; margin: 0 auto; padding: 112px 24px 44px; }
+.master-shell .barbearias-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.master-shell .barbearias-header h1 { margin: 0; color: #fff; font-size: 30px; font-weight: 800; letter-spacing: -.6px; }
+.master-shell .barbearias-count { min-width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0 11px; border: 1px solid #514820; border-radius: 999px; color: #f5c542; background: #181712; font-size: 13px; font-weight: 800; }
+.master-shell .barbearias-filters { margin-bottom: 18px; padding: 14px; border: 1px solid #29292d; border-radius: 18px; background: rgba(17,17,20,.92); box-shadow: 0 16px 45px rgba(0,0,0,.2); }
+.master-shell .compact-filter-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+.master-shell .smart-search { min-width: 0; height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 13px; border: 1px solid #303036; border-radius: 11px; background: #111114; }
+.master-shell .smart-search > span { color: #f5c542; font-size: 21px; line-height: 1; }
+.master-shell .smart-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: #fff; background: transparent; font-size: 14px; }
+.master-shell .smart-search input::placeholder { color: #66666e; }
+.master-shell .smart-search:focus-within { border-color: #f5c542; box-shadow: 0 0 0 3px rgba(245,197,66,.08); }
+.master-shell .clear-search { width: 28px; height: 28px; border: 0; border-radius: 8px; color: #8f8f97; background: #18181c; cursor: pointer; }
+.master-shell .clear-search:hover { color: #f5c542; }
+.master-shell .filter-toggle { min-width: 112px; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; border: 1px solid #34343a; border-radius: 11px; color: #d8d8dc; background: #18181c; font-size: 13px; font-weight: 800; cursor: pointer; }
+.master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color: #f5c542; color: #f5c542; background: #211f16; }
+.master-shell .filter-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; gap: 10px; align-items: end; margin-top: 12px; padding-top: 12px; border-top: 1px solid #29292d; }
+.master-shell .filter-select { display: grid; gap: 7px; }
+.master-shell .filter-select > span { color: #8f8f97; font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; }
+.master-shell .filter-select select { width: 100%; height: 42px; border: 1px solid #303036; border-radius: 10px; padding: 0 12px; color: #fff; background: #111114; outline: 0; }
+.master-shell .filter-select select:focus { border-color: #f5c542; }
+.master-shell .clear-filters { height: 42px; padding: 0 14px; border: 1px solid #514820; border-radius: 10px; color: #f5c542; background: #181712; font-size: 12px; font-weight: 800; cursor: pointer; }
+.master-shell .clear-filters:hover { background: #211f16; }
+.master-shell .barbearias-empty-filter { min-height: 330px; display: grid; place-items: center; align-content: center; padding: 40px 24px; border: 1px dashed #34343a; border-radius: 18px; background: rgba(17,17,20,.78); text-align: center; }
+.master-shell .empty-filter-icon { width: 58px; height: 58px; display: grid; place-items: center; margin-bottom: 18px; border: 1px solid #514820; border-radius: 15px; color: #f5c542; background: #181712; font-size: 23px; }
+.master-shell .barbearias-empty-filter h2 { margin: 0; color: #f1f1f3; font-size: 18px; letter-spacing: -.2px; }
+.master-shell .barbearias-empty-filter p { max-width: 500px; margin: 8px 0 0; color: #77777f; font-size: 13px; line-height: 1.55; }
+.master-shell .barbearias-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.master-shell .barbearia-card { padding: 20px; border: 1px solid #29292d; border-radius: 18px; background: rgba(17,17,20,.92); box-shadow: 0 16px 45px rgba(0,0,0,.2); }
+.master-shell .barbearia-card:hover { border-color: #514820; }
+@media (max-width: 800px) { .master-shell .barbearias-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .master-shell .filter-controls { grid-template-columns: 1fr 1fr; } .master-shell .clear-filters { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .master-shell .barbearias-panel { padding: 100px 14px 32px; } .master-shell .barbearias-header h1 { font-size: 25px; } .master-shell .barbearias-filters { padding: 10px; border-radius: 15px; } .master-shell .compact-filter-row { grid-template-columns: 1fr; } .master-shell .filter-toggle { width: 100%; } .master-shell .filter-controls { grid-template-columns: 1fr; } .master-shell .clear-filters { grid-column: auto; } .master-shell .barbearias-empty-filter { min-height: 280px; padding: 32px 18px; } .master-shell .barbearias-grid { grid-template-columns: 1fr; } }
