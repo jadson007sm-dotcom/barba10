@@ -1,5 +1,6 @@
 "use client";
 
+import "./barbershop.css";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase";
 
@@ -90,13 +91,7 @@ export default function BarbershopDashboard() {
             {loading ? "Carregando..." : barbershop?.name || "Minha Barbearia"}
           </div>
         </div>
-        <button
-          className="menu-button"
-          type="button"
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
+        <button className="menu-button" type="button" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
           <span /><span /><span />
         </button>
       </header>
@@ -105,24 +100,15 @@ export default function BarbershopDashboard() {
         <div className="barbershop-sidebar-title">Menu</div>
         <nav className="barbershop-nav" aria-label="Menu da barbearia">
           {menuItems.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              className={`barbershop-nav-item${active === item.key ? " active" : ""}`}
-              onClick={() => selectMenu(item.key)}
-            >
+            <button key={item.key} type="button" className={`barbershop-nav-item${active === item.key ? " active" : ""}`} onClick={() => selectMenu(item.key)}>
               <span>{item.label}</span>
             </button>
           ))}
         </nav>
-        <button className="barbershop-nav-item nav-logout" type="button" onClick={logout}>
-          <span>Sair</span>
-        </button>
+        <button className="barbershop-nav-item nav-logout" type="button" onClick={logout}><span>Sair</span></button>
       </aside>
 
-      {menuOpen && (
-        <button className="barbershop-overlay" aria-label="Fechar menu" type="button" onClick={() => setMenuOpen(false)} />
-      )}
+      {menuOpen && <button className="barbershop-overlay" aria-label="Fechar menu" type="button" onClick={() => setMenuOpen(false)} />}
 
       <section className="barbershop-content">
         <div className="barbershop-welcome">
@@ -145,17 +131,9 @@ export default function BarbershopDashboard() {
 
             <div className="dashboard-grid">
               <article className="dashboard-panel">
-                <div className="panel-heading">
-                  <h2>Próximos agendamentos</h2>
-                  <button type="button" onClick={() => setActive("agendamentos")}>Agendamentos</button>
-                </div>
-                <div className="dashboard-empty">
-                  <span>—</span>
-                  <h3>Agenda livre</h3>
-                  <p>Os próximos atendimentos aparecerão aqui.</p>
-                </div>
+                <div className="panel-heading"><h2>Próximos agendamentos</h2><button type="button" onClick={() => setActive("agendamentos")}>Agendamentos</button></div>
+                <div className="dashboard-empty"><span>—</span><h3>Agenda livre</h3><p>Os próximos atendimentos aparecerão aqui.</p></div>
               </article>
-
               <article className="dashboard-panel">
                 <div className="panel-heading"><h2>Acesso rápido</h2></div>
                 <div className="quick-actions">
@@ -168,10 +146,7 @@ export default function BarbershopDashboard() {
             </div>
 
             <article className="dashboard-panel shop-info-panel">
-              <div className="panel-heading">
-                <h2>Dados da barbearia</h2>
-                <button type="button" onClick={() => setActive("configuracoes")}>Configurações</button>
-              </div>
+              <div className="panel-heading"><h2>Dados da barbearia</h2><button type="button" onClick={() => setActive("configuracoes")}>Configurações</button></div>
               <div className="shop-info-grid">
                 <div><span>Barbearia</span><strong>{barbershop?.name || "—"}</strong></div>
                 <div><span>Responsável</span><strong>{barbershop?.responsible_name || "—"}</strong></div>
