@@ -42,11 +42,32 @@ export default function MasterPage() {
 
       <aside className={`master-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
         <div className="sidebar-content">
+          <button
+            className="sidebar-item"
+            type="button"
+            onClick={() => setMenuOpen(false)}
+          >
+            Barbearias
+          </button>
           <button className="sidebar-logout" onClick={logout} type="button">
             Sair
           </button>
         </div>
       </aside>
+
+      <section className="barbearias-panel" aria-label="Barbearias cadastradas">
+        <div className="barbearias-header">
+          <div>
+            <h1>Barbearias</h1>
+            <p>Barbearias cadastradas no sistema</p>
+          </div>
+        </div>
+        <div className="barbearias-empty">
+          <div className="empty-icon">✂</div>
+          <h2>Nenhuma barbearia cadastrada</h2>
+          <p>As barbearias cadastradas no sistema aparecerão aqui.</p>
+        </div>
+      </section>
     </main>
   );
 }
