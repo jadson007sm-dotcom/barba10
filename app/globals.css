@@ -71,6 +71,31 @@ button, input, select { font: inherit; }
 .status-badge { padding: 6px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
 .status-badge.ativa { color: #9be7b0; background: rgba(61,160,85,.14); }
 .status-badge.inativa { color: #f0a5a5; background: rgba(220,70,70,.12); }
+.my-barbershop-card { max-width: 680px; margin: 54px auto 0; padding: 44px 32px; text-align: center; border: 1px solid #29292d; border-radius: 24px; background: radial-gradient(circle at top, #202024 0, #111114 58%); box-shadow: 0 24px 70px rgba(0,0,0,.28); }
+.my-barbershop-icon { width: 62px; height: 62px; display: grid; place-items: center; margin: 0 auto 20px; border: 1px solid #514820; border-radius: 18px; color: #f5c542; background: rgba(245,197,66,.08); font-size: 28px; }
+.my-barbershop-card h2 { margin: 0; font-size: 25px; }
+.my-barbershop-card p { max-width: 540px; margin: 12px auto 24px; color: #9b9ba3; line-height: 1.6; }
+.vision-button, .create-barbershop-button { border: 0; border-radius: 12px; padding: 13px 22px; color: #111; background: #f5c542; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245,197,66,.12); }
+.vision-button:hover, .create-barbershop-button:hover { background: #ffd866; transform: translateY(-1px); }
+.barbershop-vision { min-height: 100vh; padding: 118px 24px 54px; max-width: 1120px; margin: 0 auto; }
+.vision-hero { position: relative; overflow: hidden; padding: 72px 42px; border: 1px solid #302f27; border-radius: 28px; background: radial-gradient(circle at 85% 10%, rgba(245,197,66,.15), transparent 34%), linear-gradient(135deg, #171719 0%, #0f0f11 72%); box-shadow: 0 28px 90px rgba(0,0,0,.3); }
+.vision-hero::after { content: ""; position: absolute; width: 220px; height: 220px; right: -80px; bottom: -110px; border: 1px solid rgba(245,197,66,.18); border-radius: 50%; }
+.vision-kicker { color: #f5c542; font-size: 12px; font-weight: 900; letter-spacing: .14em; }
+.vision-hero h1 { max-width: 780px; margin: 15px 0 16px; font-size: clamp(36px, 6vw, 64px); line-height: 1.02; letter-spacing: -1.8px; }
+.vision-hero p { max-width: 700px; margin: 0 0 28px; color: #b1b1b8; font-size: 18px; line-height: 1.65; }
+.vision-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+.vision-benefits article { padding: 26px; border: 1px solid #29292d; border-radius: 20px; background: #121215; }
+.vision-benefits article > span { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 18px; border-radius: 12px; color: #f5c542; background: rgba(245,197,66,.08); font-size: 20px; }
+.vision-benefits h2 { margin: 0 0 8px; font-size: 18px; }
+.vision-benefits p { margin: 0; color: #8f8f97; line-height: 1.55; }
+.vision-footer-card { margin-top: 18px; padding: 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #29292d; border-radius: 20px; background: #151518; }
+.vision-footer-card h2 { margin: 0 0 7px; font-size: 21px; }
+.vision-footer-card p { margin: 0; color: #8f8f97; line-height: 1.5; }
+.create-barbershop-button.secondary { flex: 0 0 auto; }
+@media (max-width: 760px) {
+  .vision-benefits { grid-template-columns: 1fr; }
+  .vision-footer-card { align-items: flex-start; flex-direction: column; }
+}
 @media (max-width: 560px) {
   .master-header { height: 70px; padding: 0 14px; }
   .master-sidebar { top: 70px; }
@@ -86,4 +111,12 @@ button, input, select { font: inherit; }
   .filter-controls { display: grid; grid-template-columns: 1fr; }
   .filter-select { min-width: 0; }
   .clear-filters { width: 100%; }
+  .my-barbershop-card { margin-top: 36px; padding: 34px 20px; }
+  .barbershop-vision { padding: 94px 14px 30px; }
+  .vision-hero { padding: 42px 24px; border-radius: 22px; }
+  .vision-hero h1 { font-size: 39px; letter-spacing: -1px; }
+  .vision-hero p { font-size: 16px; }
+  .vision-benefits article { padding: 22px; }
+  .vision-footer-card { padding: 24px; }
+  .create-barbershop-button { width: 100%; }
 }
