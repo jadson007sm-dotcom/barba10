@@ -13,6 +13,7 @@ type Barbershop = {
 
 export default function MasterPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"Todas" | "Ativa" | "Inativa">("Todas");
   const [sort, setSort] = useState<"recent" | "name">("recent");
@@ -36,14 +37,9 @@ export default function MasterPage() {
   const filteredBarbershops = useMemo(() => {
     const term = search.trim().toLocaleLowerCase("pt-BR");
     const filtered = barbershops.filter((barbershop) => {
-      const searchable = [
-        barbershop.name,
-        barbershop.city,
-        barbershop.neighborhood,
-      ]
+      const searchable = [barbershop.name, barbershop.city, barbershop.neighborhood]
         .join(" ")
         .toLocaleLowerCase("pt-BR");
-
       const matchesSearch = !term || searchable.includes(term);
       const matchesStatus = status === "Todas" || barbershop.status === status;
       return matchesSearch && matchesStatus;
@@ -69,7 +65,6 @@ export default function MasterPage() {
           <div className="master-logo">Barba<span>10</span></div>
           <div className="master-slogan">Painel Master</div>
         </div>
-
         <button
           className="menu-button"
           type="button"
@@ -77,90 +72,79 @@ export default function MasterPage() {
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          <span />
-          <span />
-          <span />
+          <span /><span /><span />
         </button>
       </header>
 
       <aside className={`master-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
         <div className="sidebar-content">
-          <button className="sidebar-logout" type="button" onClick={() => setMenuOpen(false)}>
-            Barbearias
-          </button>
-          <button className="sidebar-logout" onClick={logout} type="button">
-            Sair
-          </button>
+          <button className="sidebar-logout" type="button" onClick={() => setMenuOpen(false)}>Barbearias</button>
+          <button className="sidebar-logout" onClick={logout} type="button">Sair</button>
         </div>
       </aside>
 
       <section className="barbearias-panel" aria-label="Barbearias">
         <div className="barbearias-header">
-          <div>
-            <h1>Barbearias</h1>
-          </div>
+          <div><h1>Barbearias</h1></div>
           <span className="barbearias-count" aria-label={`${filteredBarbershops.length} barbearias encontradas`}>
             {filteredBarbershops.length}
           </span>
         </div>
 
-        <div className="barbearias-filters">
-          <label className="smart-search">
-            <span aria-hidden="true">⌕</span>
-            <input
-              type="search"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar por nome, cidade ou bairro..."
-              aria-label="Buscar barbearia por nome, cidade ou bairro"
-            />
-            {search && (
-              <button type="button" className="clear-search" onClick={() => setSearch("")} aria-label="Limpar busca">
-                ×
-              </button>
-            )}
-          </label>
-
-          <div className="filter-controls">
-            <label className="filter-select">
-              <span>Status</span>
-              <select value={status} onChange={(event) => setStatus(event.target.value as typeof status)}>
-                <option>Todas</option>
-                <option>Ativa</option>
-                <option>Inativa</option>
-              </select>
+        <div className={`barbearias-filters${filtersOpen ? " expanded" : ""}`}>
+          <div className="compact-filter-row">
+            <label className="smart-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Buscar barbearia..."
+                aria-label="Buscar barbearia por nome, cidade ou bairro"
+              />
+              {search && (
+                <button type="button" className="clear-search" onClick={() => setSearch("")} aria-label="Limpar busca">×</button>
+              )}
             </label>
 
-            <label className="filter-select">
-              <span>Ordenar</span>
-              <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
-                <option value="recent">Mais recentes</option>
-                <option value="name">Nome A–Z</option>
-              </select>
-            </label>
-
-            {hasFilters && (
-              <button className="clear-filters" type="button" onClick={clearFilters}>
-                Limpar filtros
-              </button>
-            )}
+            <button
+              className={`filter-toggle${hasFilters ? " active" : ""}`}
+              type="button"
+              aria-expanded={filtersOpen}
+              aria-controls="advanced-filters"
+              onClick={() => setFiltersOpen((open) => !open)}
+            >
+              <span aria-hidden="true">☷</span>
+              Filtros
+              {hasFilters && <b>{[status !== "Todas", sort !== "recent"].filter(Boolean).length + (search.trim() ? 1 : 0)}</b>}
+            </button>
           </div>
+
+          {filtersOpen && (
+            <div className="filter-controls" id="advanced-filters">
+              <label className="filter-select">
+                <span>Status</span>
+                <select value={status} onChange={(event) => setStatus(event.target.value as typeof status)}>
+                  <option>Todas</option><option>Ativa</option><option>Inativa</option>
+                </select>
+              </label>
+              <label className="filter-select">
+                <span>Ordenar</span>
+                <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
+                  <option value="recent">Mais recentes</option><option value="name">Nome A–Z</option>
+                </select>
+              </label>
+              {hasFilters && <button className="clear-filters" type="button" onClick={clearFilters}>Limpar filtros</button>}
+            </div>
+          )}
         </div>
 
         {filteredBarbershops.length === 0 && (
           <div className="barbearias-empty-filter">
             <div className="empty-filter-icon" aria-hidden="true">⌕</div>
             <h2>{hasFilters ? "Nenhum resultado encontrado" : "Aguardando barbearias"}</h2>
-            <p>
-              {hasFilters
-                ? "Ajuste a busca ou os filtros para encontrar uma barbearia."
-                : "Quando uma barbearia real for cadastrada, ela aparecerá aqui automaticamente."}
-            </p>
-            {hasFilters && (
-              <button className="clear-filters primary" type="button" onClick={clearFilters}>
-                Limpar filtros
-              </button>
-            )}
+            <p>{hasFilters ? "Ajuste a busca ou os filtros para encontrar uma barbearia." : "Quando uma barbearia real for cadastrada, ela aparecerá aqui automaticamente."}</p>
+            {hasFilters && <button className="clear-filters primary" type="button" onClick={clearFilters}>Limpar filtros</button>}
           </div>
         )}
 
@@ -168,10 +152,7 @@ export default function MasterPage() {
           <div className="barbearias-grid">
             {filteredBarbershops.map((barbershop) => (
               <article className="barbearia-card" key={barbershop.id}>
-                <div>
-                  <h2>{barbershop.name}</h2>
-                  <p>{barbershop.neighborhood} • {barbershop.city}</p>
-                </div>
+                <div><h2>{barbershop.name}</h2><p>{barbershop.neighborhood} • {barbershop.city}</p></div>
                 <span className={`status-badge ${barbershop.status.toLowerCase()}`}>{barbershop.status}</span>
               </article>
             ))}
