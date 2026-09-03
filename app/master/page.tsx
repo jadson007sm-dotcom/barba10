@@ -55,17 +55,9 @@ export default function MasterPage() {
         </div>
       </aside>
 
-      <section className="barbearias-panel" aria-label="Barbearias cadastradas">
+      <section className="barbearias-panel" aria-label="Barbearias">
         <div className="barbearias-header">
-          <div>
-            <h1>Barbearias</h1>
-            <p>Barbearias cadastradas no sistema</p>
-          </div>
-        </div>
-        <div className="barbearias-empty">
-          <div className="empty-icon">✂</div>
-          <h2>Nenhuma barbearia cadastrada</h2>
-          <p>As barbearias cadastradas no sistema aparecerão aqui.</p>
+          <h1>Barbearias</h1>
         </div>
       </section>
     </main>
