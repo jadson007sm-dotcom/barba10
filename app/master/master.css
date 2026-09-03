@@ -68,10 +68,11 @@
 .master-shell .modal-close:hover { color:#f5c542; border-color:#f5c542; }
 .master-shell .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:20px; padding-top:18px; border-top:1px solid #29292d; }
 
-/* Filtro compacto: fica fechado visualmente ao entrar e usa apenas o ícone. */
+/* Filtro compacto: estado inicial fechado; ícone abre/fecha os controles. */
 .master-shell .filter-toggle { width:38px; min-width:38px; height:38px; padding:0; gap:0; border-radius:9px; font-size:0; color:#8f8f97; background:#151518; }
 .master-shell .filter-toggle span { font-size:18px; line-height:1; }
 .master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color:#514820; color:#f5c542; background:#181712; }
+/* O estado React atual usa active=true no estado inicial; aqui active representa filtro fechado. */
 .master-shell .barbearias-filters:has(.filter-toggle.active) .filter-controls { display:none; }
 .master-shell .barbearias-filters:has(.filter-toggle:not(.active)) .filter-controls { display:grid; }
 
