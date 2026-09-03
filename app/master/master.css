@@ -12,11 +12,15 @@
 .master-shell .smart-search:focus-within { border-color: #f5c542; box-shadow: 0 0 0 3px rgba(245,197,66,.08); }
 .master-shell .clear-search { width: 28px; height: 28px; border: 0; border-radius: 8px; color: #8f8f97; background: #18181c; cursor: pointer; }
 .master-shell .clear-search:hover { color: #f5c542; }
-.master-shell .filter-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: end; }
+.master-shell .filter-toggle { min-width: 112px; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; border: 1px solid #34343a; border-radius: 11px; color: #d8d8dc; background: #18181c; font-size: 13px; font-weight: 800; cursor: pointer; }
+.master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color: #f5c542; color: #f5c542; background: #211f16; }
+.master-shell .filter-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; gap: 10px; align-items: end; margin-top: 12px; padding-top: 12px; border-top: 1px solid #29292d; }
 .master-shell .filter-select { display: grid; gap: 7px; }
 .master-shell .filter-select > span { color: #8f8f97; font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; }
 .master-shell .filter-select select { width: 100%; height: 42px; border: 1px solid #303036; border-radius: 10px; padding: 0 12px; color: #fff; background: #111114; outline: 0; }
 .master-shell .filter-select select:focus { border-color: #f5c542; }
+.master-shell .clear-filters { height: 42px; padding: 0 14px; border: 1px solid #514820; border-radius: 10px; color: #f5c542; background: #181712; font-size: 12px; font-weight: 800; cursor: pointer; }
+.master-shell .clear-filters:hover { background: #211f16; }
 .master-shell .barbearias-empty-filter { min-height: 330px; display: grid; place-items: center; align-content: center; padding: 40px 24px; border: 1px dashed #34343a; border-radius: 18px; background: rgba(17,17,20,.78); text-align: center; }
 .master-shell .empty-filter-icon { width: 58px; height: 58px; display: grid; place-items: center; margin: 0 auto 18px; border: 1px solid #514820; border-radius: 15px; color: #f5c542; background: #181712; font-size: 23px; }
 .master-shell .barbearias-empty-filter h2 { margin: 0; color: #f1f1f3; font-size: 18px; }
@@ -63,5 +67,5 @@
 .master-shell .modal-close { width:36px; height:36px; border:1px solid #34343a; border-radius:10px; color:#aaaab1; background:#18181c; font-size:22px; cursor:pointer; }
 .master-shell .modal-close:hover { color:#f5c542; border-color:#f5c542; }
 .master-shell .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:20px; padding-top:18px; border-top:1px solid #29292d; }
-@media (max-width:800px){.master-shell .barbearias-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.master-shell .vision-benefits{grid-template-columns:1fr}.master-shell .vision-panel h1{font-size:38px}}
-@media (max-width:560px){.master-shell .barbearias-panel{padding:100px 14px 32px}.master-shell .barbearias-header h1{font-size:25px}.master-shell .barbearias-filters{padding:10px;border-radius:15px}.master-shell .compact-filter-row{grid-template-columns:1fr}.master-shell .filter-controls{grid-template-columns:1fr}.master-shell .barbearias-empty-filter{min-height:280px;padding:32px 18px}.master-shell .barbearias-grid{grid-template-columns:1fr}.master-shell .barbearia-card{padding:16px}.master-shell .vision-panel{padding-top:120px}.master-shell .vision-panel h1{font-size:32px}.master-shell .master-modal{padding:18px;border-radius:15px}.master-shell .modal-actions{flex-direction:column-reverse}.master-shell .modal-actions>*{width:100%}}
+@media (max-width:800px){.master-shell .barbearias-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.master-shell .filter-controls{grid-template-columns:1fr 1fr}.master-shell .clear-filters{grid-column:1 / -1}.master-shell .vision-benefits{grid-template-columns:1fr}.master-shell .vision-panel h1{font-size:38px}}
+@media (max-width:560px){.master-shell .barbearias-panel{padding:100px 14px 32px}.master-shell .barbearias-header h1{font-size:25px}.master-shell .barbearias-filters{padding:10px;border-radius:15px}.master-shell .compact-filter-row{grid-template-columns:1fr}.master-shell .filter-toggle{width:100%}.master-shell .filter-controls{grid-template-columns:1fr}.master-shell .clear-filters{grid-column:auto}.master-shell .barbearias-empty-filter{min-height:280px;padding:32px 18px}.master-shell .barbearias-grid{grid-template-columns:1fr}.master-shell .barbearia-card{padding:16px}.master-shell .vision-panel{padding-top:120px}.master-shell .vision-panel h1{font-size:32px}.master-shell .master-modal{padding:18px;border-radius:15px}.master-shell .modal-actions{flex-direction:column-reverse}.master-shell .modal-actions>*{width:100%}}
