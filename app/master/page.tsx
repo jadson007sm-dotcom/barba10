@@ -31,7 +31,6 @@ export default function MasterPage() {
     window.location.href = "/";
   }
 
-  // A lista permanece vazia até existirem barbearias reais no sistema.
   const barbershops: Barbershop[] = [];
 
   const filteredBarbershops = useMemo(() => {
@@ -112,10 +111,11 @@ export default function MasterPage() {
               type="button"
               aria-expanded={filtersOpen}
               aria-controls="advanced-filters"
+              aria-label={filtersOpen ? "Minimizar filtros" : "Expandir filtros"}
               onClick={() => setFiltersOpen((open) => !open)}
             >
-              <span aria-hidden="true">☷</span>
-              Filtros
+              <span aria-hidden="true">{filtersOpen ? "⌃" : "☷"}</span>
+              {filtersOpen ? "Minimizar" : "Filtros"}
               {hasFilters && <b>{[status !== "Todas", sort !== "recent"].filter(Boolean).length + (search.trim() ? 1 : 0)}</b>}
             </button>
           </div>
