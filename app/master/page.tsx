@@ -5,13 +5,11 @@ import { createClient } from "@/lib/supabase";
 
 export default function MasterPage() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) window.location.href = "/";
-      else setEmail(data.user.email ?? null);
     });
   }, []);
 
@@ -49,11 +47,6 @@ export default function MasterPage() {
           </button>
         </div>
       </aside>
-
-      <section className="master-content">
-        <h1>Painel Master</h1>
-        <p>{email ? `Acesso autorizado para ${email}.` : "Acesso autorizado."}</p>
-      </section>
     </main>
   );
 }
