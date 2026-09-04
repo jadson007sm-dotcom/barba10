@@ -1,0 +1,8 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
+import "../login/cliente.css";
+
+type Profile={name:string;whatsapp:string;email:string};
+export default function PerfilCliente(){const router=useRouter();const [profile,setProfile]=useState<Profile|null>(null);const [loading,setLoading]=useState(true);const [error,setError]=useState("");useEffect(()=>{(async()=>{const supabase=createClient();const {data:{user}}=await supabase.auth.getUser();if(!user){router.replace("/cliente/login");return}const {data,error:e}=await supabase.from("customer_profiles").select("name,whatsapp,email").eq("id",user.id).maybeSingle();if(e||!data){setError("Não foi possível carregar seus dados.");setLoading(false);return}setProfile(data);setLoading(false)})()},[router]);return <main className="customer-shell"><header className="customer-header"><div className="customer-brand">Barba<span>10</span></div><div className="customer-shop">Meu perfil</div></header><section className="customer-content"><div className="customer-card"><span className="customer-kicker">ÁREA DO CLIENTE</span><h1>Meu perfil</h1><p>Seus dados cadastrados no Barba10.</p>{loading?<div className="customer-message">Carregando seus dados...</div>:error?<div className="customer-error">{error}</div>:profile&&<div style={{display:"grid",gap:12}}><label>Nome<input value={profile.name||""} readOnly/></label><label>WhatsApp<input value={profile.whatsapp||""} readOnly/></label><label>Email interno<input value={profile.email||""} readOnly/></label></div>}<button className="customer-back" onClick={()=>router.push("/agendamento")}>Voltar para agendamento</button></div></section></main>}
