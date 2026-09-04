@@ -4,21 +4,9 @@ import "./barbershop.css";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase";
 
-type Barbershop = {
-  id: string;
-  name: string;
-  responsible_name: string;
-  whatsapp: string;
-  email: string;
-  city: string;
-  state: string;
-  number: string;
-  address: string;
-  cep: string;
-};
-
+type Barbershop = { id: string; name: string; responsible_name: string; whatsapp: string; email: string; city: string; state: string; number: string; address: string; cep: string };
+type Appointment = { id: string; appointment_date: string; appointment_time: string; barber_name: string; services: string[]; client_name: string; client_whatsapp: string; status: string };
 type MenuKey = "inicio" | "agendamentos" | "clientes" | "equipe" | "feed" | "servico" | "horarios" | "estoque" | "configuracoes";
-
 const menuItems: { key: MenuKey; label: string; description: string }[] = [
   { key: "inicio", label: "Início", description: "Visão geral da sua barbearia." },
   { key: "agendamentos", label: "Agendamentos", description: "Controle sua agenda e os próximos atendimentos." },
@@ -30,148 +18,21 @@ const menuItems: { key: MenuKey; label: string; description: string }[] = [
   { key: "estoque", label: "Estoque", description: "Controle produtos e materiais da barbearia." },
   { key: "configuracoes", label: "Configurações", description: "Ajuste os dados e preferências da barbearia." },
 ];
-
+function formatAppointmentDate(value: string) { const [y,m,d] = value.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString("pt-BR", { day:"2-digit", month:"2-digit", year:"numeric" }); }
+function formatAppointmentTime(value: string) { return value.slice(0,5); }
 export default function BarbershopDashboard() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState<MenuKey>("inicio");
-  const [barbershop, setBarbershop] = useState<Barbershop | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const supabase = createClient();
-    let mounted = true;
-
-    async function load() {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) {
-        window.location.href = "/";
-        return;
-      }
-
-      const { data } = await supabase
-        .from("barbershops")
-        .select("id,name,responsible_name,whatsapp,email,city,state,number,address,cep")
-        .eq("owner_id", userData.user.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (mounted) {
-        setBarbershop((data as Barbershop | null) ?? null);
-        setLoading(false);
-      }
-    }
-
-    load();
-    return () => { mounted = false; };
-  }, []);
-
-  async function logout() {
-    await createClient().auth.signOut();
-    window.location.href = "/";
-  }
-
-  function selectMenu(key: MenuKey) {
-    setActive(key);
-    setMenuOpen(false);
-  }
-
-  const current = useMemo(
-    () => menuItems.find((item) => item.key === active) ?? menuItems[0],
-    [active],
-  );
-
-  return (
-    <main className="barbershop-shell">
-      <header className="barbershop-header">
-        <div className="barbershop-brand" aria-label="Barba10">
-          <div className="barbershop-logo">Barba<span>10</span></div>
-          <div className="barbershop-divider" />
-          <div className="barbershop-name">
-            {loading ? "Carregando..." : barbershop?.name || "Minha Barbearia"}
-          </div>
-        </div>
-        <button className="menu-button" type="button" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>
-          <span /><span /><span />
-        </button>
-      </header>
-
-      <aside className={`barbershop-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
-        <div className="barbershop-sidebar-title">Menu</div>
-        <nav className="barbershop-nav" aria-label="Menu da barbearia">
-          {menuItems.map((item) => (
-            <button key={item.key} type="button" className={`barbershop-nav-item${active === item.key ? " active" : ""}`} onClick={() => selectMenu(item.key)}>
-              <span>{item.label}</span>
-            </button>
-          ))}
-        </nav>
-        <button className="barbershop-nav-item nav-logout" type="button" onClick={logout}><span>Sair</span></button>
-      </aside>
-
-      {menuOpen && <button className="barbershop-overlay" aria-label="Fechar menu" type="button" onClick={() => setMenuOpen(false)} />}
-
-      <section className="barbershop-content">
-        <div className="barbershop-welcome">
-          <div>
-            <span className="dashboard-kicker">BARBA10 • PAINEL DA BARBEARIA</span>
-            <h1>{active === "inicio" ? `Olá, ${barbershop?.responsible_name?.split(" ")[0] || "seja bem-vindo"}!` : current.label}</h1>
-            <p>{current.description}</p>
-          </div>
-          <div className="shop-status"><span /> Ativa</div>
-        </div>
-
-        {active === "inicio" ? (
-          <>
-            <div className="dashboard-cards">
-              <article className="dashboard-card"><span>Agendamentos hoje</span><strong>0</strong><p>Nenhum atendimento registrado</p></article>
-              <article className="dashboard-card"><span>Clientes</span><strong>0</strong><p>Clientes cadastrados</p></article>
-              <article className="dashboard-card"><span>Equipe</span><strong>0</strong><p>Profissionais cadastrados</p></article>
-              <article className="dashboard-card"><span>Serviços</span><strong>0</strong><p>Serviços ativos</p></article>
-            </div>
-
-            <div className="dashboard-grid">
-              <article className="dashboard-panel">
-                <div className="panel-heading"><h2>Próximos agendamentos</h2><button type="button" onClick={() => setActive("agendamentos")}>Agendamentos</button></div>
-                <div className="dashboard-empty"><span>—</span><h3>Agenda livre</h3><p>Os próximos atendimentos aparecerão aqui.</p></div>
-              </article>
-              <article className="dashboard-panel">
-                <div className="panel-heading"><h2>Acesso rápido</h2></div>
-                <div className="quick-actions">
-                  <button type="button" onClick={() => setActive("agendamentos")}>Novo agendamento</button>
-                  <button type="button" onClick={() => setActive("clientes")}>Novo cliente</button>
-                  <button type="button" onClick={() => setActive("servico")}>Novo serviço</button>
-                  <button type="button" onClick={() => setActive("horarios")}>Configurar horários</button>
-                </div>
-              </article>
-            </div>
-
-            <article className="dashboard-panel shop-info-panel">
-              <div className="panel-heading"><h2>Dados da barbearia</h2><button type="button" onClick={() => setActive("configuracoes")}>Configurações</button></div>
-              <div className="shop-info-grid">
-                <div><span>Barbearia</span><strong>{barbershop?.name || "—"}</strong></div>
-                <div><span>Responsável</span><strong>{barbershop?.responsible_name || "—"}</strong></div>
-                <div><span>Endereço</span><strong>{barbershop ? `${barbershop.address}, ${barbershop.number}` : "—"}</strong></div>
-                <div><span>Localização</span><strong>{barbershop ? `${barbershop.city} - ${barbershop.state}` : "—"}</strong></div>
-                <div><span>WhatsApp</span><strong>{barbershop?.whatsapp || "—"}</strong></div>
-                <div><span>CEP</span><strong>{barbershop?.cep || "—"}</strong></div>
-              </div>
-            </article>
-          </>
-        ) : (
-          <article className="feature-panel">
-            <div className="feature-icon" aria-hidden="true">{current.label.slice(0, 1)}</div>
-            <h2>{current.label}</h2>
-            <p>{current.description}</p>
-            <div className="feature-coming">Área pronta para receber as funções deste módulo.</div>
-            <div className="feature-actions">
-              <button type="button" onClick={() => setActive("inicio")}>Voltar ao Início</button>
-              {active === "agendamentos" && <button type="button" className="primary">Novo agendamento</button>}
-              {active === "clientes" && <button type="button" className="primary">Novo cliente</button>}
-              {active === "servico" && <button type="button" className="primary">Novo serviço</button>}
-            </div>
-          </article>
-        )}
-      </section>
-    </main>
-  );
+  const [menuOpen, setMenuOpen] = useState(false); const [active, setActive] = useState<MenuKey>("inicio"); const [barbershop, setBarbershop] = useState<Barbershop | null>(null); const [appointments, setAppointments] = useState<Appointment[]>([]); const [loading, setLoading] = useState(true); const [appointmentsLoading, setAppointmentsLoading] = useState(false);
+  useEffect(() => { const supabase = createClient(); let mounted = true; async function load() { const { data: userData } = await supabase.auth.getUser(); if (!userData.user) { window.location.href = "/"; return; } const { data } = await supabase.from("barbershops").select("id,name,responsible_name,whatsapp,email,city,state,number,address,cep").eq("owner_id", userData.user.id).order("created_at", { ascending:false }).limit(1).maybeSingle(); if (mounted) { setBarbershop((data as Barbershop | null) ?? null); setLoading(false); } } load(); return () => { mounted = false; }; }, []);
+  useEffect(() => { if (active !== "agendamentos" || !barbershop) return; const supabase = createClient(); let mounted = true; async function loadAppointments() { setAppointmentsLoading(true); const { data } = await supabase.from("appointments").select("id,appointment_date,appointment_time,barber_name,services,client_name,client_whatsapp,status").eq("barbershop_id", barbershop.id).order("appointment_date", { ascending:true }).order("appointment_time", { ascending:true }); if (mounted) { setAppointments((data as Appointment[]) ?? []); setAppointmentsLoading(false); } } loadAppointments(); return () => { mounted = false; }; }, [active, barbershop]);
+  async function logout() { await createClient().auth.signOut(); window.location.href = "/"; }
+  function selectMenu(key: MenuKey) { setActive(key); setMenuOpen(false); }
+  const current = useMemo(() => menuItems.find((item) => item.key === active) ?? menuItems[0], [active]);
+  function openClientArea() { setMenuOpen(false); if (barbershop) window.location.href = `/barbearia/area-cliente?barbershop=${encodeURIComponent(barbershop.id)}`; }
+  return <main className="barbershop-shell">
+    <header className="barbershop-header"><div className="barbershop-brand" aria-label="Barba10"><div className="barbershop-logo">Barba<span>10</span></div><div className="barbershop-divider"/><div className="barbershop-name">{loading ? "Carregando..." : barbershop?.name || "Minha Barbearia"}</div></div><button className="menu-button" type="button" aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}><span /><span /><span /></button></header>
+    <aside className={`barbershop-sidebar${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}><div className="barbershop-sidebar-title">Menu</div><nav className="barbershop-nav" aria-label="Menu da barbearia">{menuItems.map((item) => <button key={item.key} type="button" className={`barbershop-nav-item${active === item.key ? " active" : ""}`} onClick={() => selectMenu(item.key)}><span>{item.label}</span></button>)}<button type="button" className="barbershop-nav-item" onClick={openClientArea}><span>Área do Cliente</span></button></nav><button className="barbershop-nav-item nav-logout" type="button" onClick={logout}><span>Sair</span></button></aside>
+    {menuOpen && <button className="barbershop-overlay" aria-label="Fechar menu" type="button" onClick={() => setMenuOpen(false)} />}
+    <section className="barbershop-content"><div className="barbershop-welcome"><div><span className="dashboard-kicker">BARBA10 • PAINEL DA BARBEARIA</span><h1>{active === "inicio" ? `Olá, ${barbershop?.responsible_name?.split(" ")[0] || "seja bem-vindo"}!` : current.label}</h1><p>{current.description}</p></div><div className="shop-status"><span /> Ativa</div></div>
+      {active === "inicio" ? <><div className="dashboard-cards"><article className="dashboard-card"><span>Agendamentos hoje</span><strong>0</strong><p>Nenhum atendimento registrado</p></article><article className="dashboard-card"><span>Clientes</span><strong>0</strong><p>Clientes cadastrados</p></article><article className="dashboard-card"><span>Equipe</span><strong>0</strong><p>Profissionais cadastrados</p></article><article className="dashboard-card"><span>Serviços</span><strong>0</strong><p>Serviços ativos</p></article></div><div className="dashboard-grid"><article className="dashboard-panel"><div className="panel-heading"><h2>Próximos agendamentos</h2><button type="button" onClick={() => setActive("agendamentos")}>Agendamentos</button></div><div className="dashboard-empty"><span>—</span><h3>Agenda livre</h3><p>Os próximos atendimentos aparecerão aqui.</p></div></article><article className="dashboard-panel"><div className="panel-heading"><h2>Acesso rápido</h2></div><div className="quick-actions"><button type="button" onClick={() => setActive("agendamentos")}>Novo agendamento</button><button type="button" onClick={() => setActive("clientes")}>Novo cliente</button><button type="button" onClick={() => setActive("servico")}>Novo serviço</button><button type="button" onClick={() => setActive("horarios")}>Configurar horários</button></div></article></div><article className="dashboard-panel shop-info-panel"><div className="panel-heading"><h2>Dados da barbearia</h2><button type="button" onClick={() => setActive("configuracoes")}>Configurações</button></div><div className="shop-info-grid"><div><span>Barbearia</span><strong>{barbershop?.name || "—"}</strong></div><div><span>Responsável</span><strong>{barbershop?.responsible_name || "—"}</strong></div><div><span>Endereço</span><strong>{barbershop ? `${barbershop.address}, ${barbershop.number}` : "—"}</strong></div><div><span>Localização</span><strong>{barbershop ? `${barbershop.city} - ${barbershop.state}` : "—"}</strong></div><div><span>WhatsApp</span><strong>{barbershop?.whatsapp || "—"}</strong></div><div><span>CEP</span><strong>{barbershop?.cep || "—"}</strong></div></div></article></> : active === "agendamentos" ? <article className="feature-panel appointments-panel"><div className="feature-icon" aria-hidden="true">A</div><h2>Agendamentos</h2><p>{appointmentsLoading ? "Carregando agendamentos..." : "Agendamentos recebidos pela sua barbearia."}</p>{!appointmentsLoading && appointments.length === 0 ? <div className="feature-coming">Nenhum agendamento recebido ainda.</div> : <div className="appointments-list">{appointments.map((item) => <article key={item.id} className="appointment-item"><div><strong>{item.client_name}</strong><span>{formatAppointmentDate(item.appointment_date)} às {formatAppointmentTime(item.appointment_time)}</span></div><div><span>Barbeiro: {item.barber_name}</span><span>Serviços: {Array.isArray(item.services) ? item.services.join(", ") : String(item.services)}</span><span>WhatsApp: {item.client_whatsapp}</span></div><b>{item.status === "pending" ? "Pendente" : item.status}</b></article>)}</div>}</article> : <article className="feature-panel"><div className="feature-icon" aria-hidden="true">{current.label.slice(0,1)}</div><h2>{current.label}</h2><p>{current.description}</p><div className="feature-coming">Área pronta para receber as funções deste módulo.</div><div className="feature-actions"><button type="button" onClick={() => setActive("inicio")}>Voltar ao Início</button>{active === "clientes" && <button type="button" className="primary">Novo cliente</button>}{active === "servico" && <button type="button" className="primary">Novo serviço</button>}</div></article>}
+    </section></main>;
 }
