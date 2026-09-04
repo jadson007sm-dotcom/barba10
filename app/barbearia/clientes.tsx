@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase";
 
 type Customer={id:string;name:string;whatsapp:string;email:string;created_at:string};
 
-type AppointmentClient={client_id:string|null};
+type AppointmentClient={client_id:string|null;client_whatsapp:string|null};
 
 export default function ClientesPanel({barbershopId}:{barbershopId:string}){
  const [customers,setCustomers]=useState<Customer[]>([]);
@@ -14,12 +14,18 @@ export default function ClientesPanel({barbershopId}:{barbershopId:string}){
  const load=async()=>{
   setLoading(true);setError("");
   const s=createClient();
-  const {data:appointments,error:appointmentsError}=await s.from("appointments").select("client_id").eq("barbershop_id",barbershopId).not("client_id","is",null);
+  const {data:appointments,error:appointmentsError}=await s.from("appointments").select("client_id,client_whatsapp").eq("barbershop_id",barbershopId);
   if(appointmentsError){setError("Não foi possível carregar os clientes.");setCustomers([]);setLoading(false);return}
   const customerIds=[...new Set((appointments??[]).map((appointment:AppointmentClient)=>appointment.client_id).filter((id):id is string=>Boolean(id)))];
-  if(customerIds.length===0){setCustomers([]);setLoading(false);return}
-  const {data,error:e}=await s.from("customer_profiles").select("id,name,whatsapp,email,created_at").in("id",customerIds).order("name",{ascending:true});
-  if(e){setError("Não foi possível carregar os clientes.");setCustomers([])}else setCustomers((data??[]) as Customer[]);
+  const appointmentWhatsapps=[...new Set((appointments??[]).map((appointment:AppointmentClient)=>appointment.client_whatsapp?.replace(/\D/g,"")).filter((whatsapp):whatsapp is string=>Boolean(whatsapp)))];
+  const {data:profilesById,error:idError}=customerIds.length?await s.from("customer_profiles").select("id,name,whatsapp,email,created_at,whatsapp_normalized").in("id",customerIds):{data:[],error:null};
+  if(idError){setError("Não foi possível carregar os clientes.");setCustomers([]);setLoading(false);return}
+  const {data:profilesByWhatsapp,error:whatsappError}=appointmentWhatsapps.length?await s.from("customer_profiles").select("id,name,whatsapp,email,created_at,whatsapp_normalized").in("whatsapp_normalized",appointmentWhatsapps):{data:[],error:null};
+  if(whatsappError){setError("Não foi possível carregar os clientes.");setCustomers([]);setLoading(false);return}
+  const merged=new Map<string,Customer>();
+  [...(profilesById??[]),...(profilesByWhatsapp??[])].forEach((profile)=>merged.set(profile.id,profile as Customer));
+  const result=[...merged.values()].sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+  setCustomers(result);
   setLoading(false);
  };
  useEffect(()=>{load()},[barbershopId]);
