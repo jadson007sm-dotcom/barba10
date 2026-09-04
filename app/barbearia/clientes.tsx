@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase";
 
 type Customer={id:string;name:string;whatsapp:string;email:string;created_at:string};
 
+type AppointmentClient={client_id:string|null};
+
 export default function ClientesPanel({barbershopId}:{barbershopId:string}){
  const [customers,setCustomers]=useState<Customer[]>([]);
  const [loading,setLoading]=useState(true);
@@ -12,7 +14,11 @@ export default function ClientesPanel({barbershopId}:{barbershopId:string}){
  const load=async()=>{
   setLoading(true);setError("");
   const s=createClient();
-  const {data,error:e}=await s.from("customer_profiles").select("id,name,whatsapp,email,created_at").order("name",{ascending:true});
+  const {data:appointments,error:appointmentsError}=await s.from("appointments").select("client_id").eq("barbershop_id",barbershopId).not("client_id","is",null);
+  if(appointmentsError){setError("Não foi possível carregar os clientes.");setCustomers([]);setLoading(false);return}
+  const customerIds=[...new Set((appointments??[]).map((appointment:AppointmentClient)=>appointment.client_id).filter((id):id is string=>Boolean(id)))];
+  if(customerIds.length===0){setCustomers([]);setLoading(false);return}
+  const {data,error:e}=await s.from("customer_profiles").select("id,name,whatsapp,email,created_at").in("id",customerIds).order("name",{ascending:true});
   if(e){setError("Não foi possível carregar os clientes.");setCustomers([])}else setCustomers((data??[]) as Customer[]);
   setLoading(false);
  };
