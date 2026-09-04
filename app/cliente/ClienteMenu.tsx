@@ -58,17 +58,15 @@ export default function ClienteMenu(){
   <button className={styles.menuButton} type="button" aria-label={open?"Fechar menu":"Abrir menu"} aria-expanded={open} onClick={()=>setOpen(v=>!v)}>
    <span/><span/><span/>
   </button>
-  {open&&<>
-   <button className={styles.backdrop} aria-label="Fechar menu" type="button" onClick={()=>setOpen(false)}/>
-   <aside className={styles.panel} aria-label="Menu do cliente">
-    <div className={styles.panelTitle}><span>Menu</span>{name&&<strong>{name}</strong>}</div>
-    <nav className={styles.nav}>
-     <button type="button" className={pathname==="/cliente/perfil"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/perfil")}}>Meu perfil</button>
-     <button type="button" className={pathname==="/cliente/agendamentos"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/agendamentos")}}>Agendamentos</button>
-     <button type="button" className={pathname==="/cliente/historico"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/historico")}}>Histórico</button>
-    </nav>
-    <button type="button" className={styles.logout} onClick={logout}>Sair</button>
-   </aside>
-  </>}
+  {open&&<button className={styles.backdrop} aria-label="Fechar menu" type="button" onClick={()=>setOpen(false)}/>} 
+  <aside className={`${styles.panel}${open?` ${styles.panelOpen}`:""}`} aria-hidden={!open} aria-label="Menu do cliente">
+   <div className={styles.panelTitle}><span>Menu</span>{name&&<strong>{name}</strong>}</div>
+   <nav className={styles.nav}>
+    <button type="button" className={pathname==="/cliente/perfil"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/perfil")}}>Meu perfil</button>
+    <button type="button" className={pathname==="/cliente/agendamentos"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/agendamentos")}}>Agendamentos</button>
+    <button type="button" className={pathname==="/cliente/historico"?styles.active:""} onClick={()=>{setOpen(false);router.push("/cliente/historico")}}>Histórico</button>
+   </nav>
+   <button type="button" className={styles.logout} onClick={logout}>Sair</button>
+  </aside>
  </div>
 }
