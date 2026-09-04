@@ -4,6 +4,7 @@ import "./barbershop.css";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import EquipePanel from "./equipe";
+import AgendamentosPanel from "./agendamentos";
 
 type Barbershop = {
   id: string;
@@ -158,6 +159,8 @@ export default function BarbershopDashboard() {
           </>
         ) : active === "equipe" && barbershop ? (
           <EquipePanel barbershopId={barbershop.id} />
+        ) : active === "agendamentos" && barbershop ? (
+          <AgendamentosPanel barbershopId={barbershop.id} />
         ) : (
           <article className="feature-panel">
             <div className="feature-icon" aria-hidden="true">{current.label.slice(0, 1)}</div>
