@@ -1,1 +1,0 @@
-'use client'; import {ReactNode,useState} from 'react'; export function DropdownMenu({label,children}:{label:ReactNode;children:ReactNode}){const[o,s]=useState(false);return <div className="relative inline-block"><button onClick={()=>s(!o)}>{label}</button>{o&&<div className="absolute right-0 z-20 mt-2 rounded-lg border bg-white p-2 shadow-lg">{children}</div>}</div>}

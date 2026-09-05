@@ -1,1 +1,0 @@
-import {ReactNode} from 'react'; export function Badge({children}:{children:ReactNode}){return <span className="inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium">{children}</span>}

@@ -1,1 +1,0 @@
-import {Card} from '@/components/ui/card'; export function TenantList({tenants}:{tenants:{id:string;name:string;slug:string}[]}){return <div className="space-y-3">{tenants.map(t=><Card key={t.id}><b>{t.name}</b><p>/{t.slug}</p></Card>)}</div>}

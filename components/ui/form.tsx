@@ -1,1 +1,0 @@
-import {FormHTMLAttributes,ReactNode} from 'react'; export function Form({children,...p}:{children:ReactNode}&FormHTMLAttributes<HTMLFormElement>){return <form {...p} className={`space-y-4 ${p.className||''}`}>{children}</form>}
