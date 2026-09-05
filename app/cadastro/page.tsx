@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { trackLandingEvent } from "@/components/landing-analytics";
 
 function slugify(value: string) {
   return value
@@ -61,7 +62,6 @@ export default function CadastroPage() {
     }
 
     if (!data) throw new Error("A criação da barbearia não retornou um identificador.");
-    window.localStorage.removeItem("barba10_onboarding");
     return String(data);
   }
 
@@ -87,6 +87,8 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
+      await trackLandingEvent("signup_started");
+
       const supabase = createClient();
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
@@ -99,7 +101,7 @@ export default function CadastroPage() {
 
       if (error) {
         if (error.message.toLowerCase().includes("already registered")) {
-          setMessage({ type:"error", text:"Este e-mail já possui uma conta. Entre e conclua o cadastro da barbearia." });
+          setMessage({ type:"error", text:"Este e-mail já possui uma conta. Entre para continuar." });
         } else {
           setMessage({ type:"error", text:"Não foi possível criar sua conta. Verifique os dados." });
         }
@@ -113,8 +115,10 @@ export default function CadastroPage() {
 
       if (data.session) {
         await createTenant();
-        setMessage({ type:"success", text:"Barbearia criada. Redirecionando..." });
-        window.location.assign("/");
+        await trackLandingEvent("signup_completed");
+        window.localStorage.removeItem("barba10_onboarding");
+        setMessage({ type:"success", text:"Cadastro concluído. Abrindo sua área..." });
+        window.setTimeout(() => window.location.assign("/"), 500);
         return;
       }
 
