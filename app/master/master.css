@@ -87,6 +87,35 @@
 .sidebar-content {
   width: 100%;
   height: 100%;
+  padding: 18px 14px;
+  box-sizing: border-box;
+}
+
+.sidebar-menu-button {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 14px;
+  border: 1px solid #34343a;
+  border-radius: 10px;
+  color: #fff;
+  background: #18181c;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.sidebar-menu-button:hover {
+  border-color: #f5c542;
+  background: #202024;
+}
+
+.sidebar-menu-button:active {
+  transform: scale(0.98);
 }
 
 @media (max-width: 560px) {
@@ -106,5 +135,9 @@
 
   .master-slogan {
     font-size: 12px;
+  }
+
+  .sidebar-content {
+    padding: 14px 10px;
   }
 }
