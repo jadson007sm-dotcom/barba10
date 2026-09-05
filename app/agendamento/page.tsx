@@ -76,8 +76,10 @@ export default function ClientBookingPage() {
         p_interval_minutes: 30,
       });
       if (mounted) {
-        setAvailableSlots(rpcError ? [] : (data ?? []).map((x: { slot_time: string }) => x.slot_time.slice(0, 5)));
+        const slots = rpcError ? [] : (data ?? []).map((x: { slot_time: string }) => x.slot_time.slice(0, 5));
+        setAvailableSlots(slots);
         if (rpcError) setError("Não foi possível calcular os horários disponíveis.");
+        if (time && !slots.includes(time)) setTime("");
         setLoadingSlots(false);
       }
     })();
@@ -111,7 +113,7 @@ export default function ClientBookingPage() {
     if (step === "date" && date) setStep("barber");
     else if (step === "barber" && barber) setStep("time");
     else if (step === "time" && time) setStep("service");
-    else if (step === "service" && services.length) setStep("summary");
+    else if (step === "service" && services.length && time) setStep("summary");
   };
   const back = () => { const index = steps.indexOf(step); if (index > 0) setStep(steps[index - 1]); };
   const toggleService = (id: string) => { setServices((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); };
@@ -143,20 +145,19 @@ export default function ClientBookingPage() {
   };
 
   const restart = () => { setStep("date"); setDate(""); setTime(""); setBarber(""); setServices([]); setConfirmed(false); setError(""); };
-  const enter = () => { const current = draft(); if (isCompleteDraft(current)) sessionStorage.setItem("barba10_pending_booking", JSON.stringify(current)); else sessionStorage.removeItem("barba10_pending_booking"); window.location.href = `/cliente/login?barbershop=${encodeURIComponent(barbershopId)}&nome=${encodeURIComponent(barbershopName)}`; };
 
   return <main className="booking-shell">
     <header className="booking-header"><div className="booking-brand">Barba<span>10</span></div><div className="booking-shop-name">{barbershopName}</div><ClienteMenu /></header>
     <section className="booking-content"><div className="booking-progress">{steps.map((item, index) => <span key={item} className={steps.indexOf(step) >= index ? "done" : ""} />)}</div>
       <div className="booking-card"><span className="booking-kicker">AGENDAMENTO</span><h1>{confirmed ? "Agendamento confirmado" : stepTitle[step]}</h1><p className="booking-subtitle">{confirmed ? "Seu agendamento foi registrado com sucesso." : "Horários calculados conforme funcionamento, duração do serviço e disponibilidade do barbeiro."}</p>
-        {!confirmed && step === "date" && <div className="calendar"><div className="calendar-nav"><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} disabled={month <= new Date(today.getFullYear(), today.getMonth(), 1)}>‹</button><strong>{monthNames[month.getMonth()]} {month.getFullYear()}</strong><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>›</button></div><div className="weekdays">{["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => <span key={day}>{day}</span>)}</div><div className="calendar-grid">{calendar.map((day, index) => { const current = day.getMonth() === month.getMonth(); const past = day < today; const key = toDateKey(day); return <button key={`${key}-${index}`} type="button" disabled={!current || past} className={`${date === key ? "selected " : ""}${!current ? "muted " : ""}`} onClick={() => setDate(key)}>{day.getDate()}</button>; })}</div></div>}
+        {!confirmed && step === "date" && <div className="calendar"><div className="calendar-nav"><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} disabled={month <= new Date(today.getFullYear(), today.getMonth(), 1)}>‹</button><strong>{monthNames[month.getMonth()]} {month.getFullYear()}</strong><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>›</button></div><div className="weekdays">{["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => <span key={day}>{day}</span>)}</div><div className="calendar-grid">{calendar.map((day, index) => { const current = day.getMonth() === month.getMonth(); const past = day < today; const key = toDateKey(day); return <button key={`${key}-${index}`} type="button" disabled={!current || past} className={`${date === key ? "selected " : ""}${!current ? "muted " : ""}`} onClick={() => { setDate(key); setTime(""); }}>{day.getDate()}</button>; })}</div></div>}
         {!confirmed && step === "barber" && (loadingBarbers ? <div className="booking-empty">Carregando barbeiros disponíveis...</div> : barbers.length === 0 ? <div className="booking-empty">Nenhum barbeiro ativo está disponível no momento.</div> : <div className="choice-grid">{barbers.map((item) => <button key={item.id} type="button" className={barber === item.id ? "selected" : ""} onClick={() => { setBarber(item.id); setTime(""); }}>{item.name}</button>)}</div>)}
         {!confirmed && step === "time" && (loadingSlots ? <div className="booking-empty">Calculando horários disponíveis...</div> : availableSlots.length === 0 ? <div className="booking-empty">Nenhum horário disponível para este barbeiro e data. Volte e escolha outra opção.</div> : <div className="choice-grid">{availableSlots.map((item) => <button key={item} type="button" className={time === item ? "selected" : ""} onClick={() => setTime(item)}>{item}</button>)}</div>)}
         {!confirmed && step === "service" && (loadingServices ? <div className="booking-empty">Carregando serviços disponíveis...</div> : serviceOptions.length === 0 ? <div className="booking-empty">Nenhum serviço ativo está disponível no momento.</div> : <div className="choice-grid service-choice-grid">{serviceOptions.map((item) => <button key={item.id} type="button" className={services.includes(item.id) ? "selected" : ""} onClick={() => toggleService(item.id)}><strong>{services.includes(item.id) ? "✓ " : ""}{item.name}</strong><small>{item.duration_minutes} min • {money(Number(item.price))}</small></button>)}</div>)}
         {!confirmed && step === "summary" && <div className="summary"><div><span>Barbearia</span><strong>{barbershopName}</strong></div><div><span>Data</span><strong>{formatDate(date)}</strong></div><div><span>Horário</span><strong>{time}</strong></div><div><span>Barbeiro</span><strong>{barbers.find((item) => item.id === barber)?.name || "—"}</strong></div><div><span>Serviços</span><strong>{selectedServices.map((service) => `${service.name} (${service.duration_minutes} min • ${money(Number(service.price))})`).join(", ")}</strong></div><button className="confirm" type="button" onClick={confirmBooking} disabled={saving}>{saving ? "Salvando..." : "Confirmar agendamento"}</button><p className="booking-auth-note">Para confirmar, você precisa entrar ou criar sua conta de cliente.</p></div>}
         {error && <div className="booking-error" role="alert">{error}</div>}
         {confirmed && <button className="primary" type="button" onClick={restart}>Voltar ao calendário</button>}
-        {!confirmed && <div className="booking-actions">{step !== "date" && <button className="secondary" type="button" onClick={back}>Voltar</button>}{step !== "summary" && <button className="primary" type="button" onClick={next} disabled={(step === "date" && !date) || (step === "barber" && (!barber || !barbers.length)) || (step === "time" && !time) || (step === "service" && (!services.length || !serviceOptions.length))}>Continuar</button>}</div>}
+        {!confirmed && <div className="booking-actions">{step !== "date" && <button className="secondary" type="button" onClick={back}>Voltar</button>}{step !== "summary" && <button className="primary" type="button" onClick={next} disabled={(step === "date" && !date) || (step === "barber" && (!barber || !barbers.length)) || (step === "time" && !time) || (step === "service" && (!services.length || !serviceOptions.length || !time))}>Continuar</button>}</div>}
       </div>
     </section>
   </main>;
