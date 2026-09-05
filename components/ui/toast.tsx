@@ -1,0 +1,1 @@
+'use client'; import {useState} from 'react'; export function Toast({message}:{message:string}){const[v,s]=useState(true);if(!v)return null;return <div className="fixed bottom-4 right-4 rounded-lg bg-black px-4 py-3 text-white shadow-xl" onClick={()=>s(false)}>{message}</div>}
