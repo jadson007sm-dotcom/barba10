@@ -53,22 +53,18 @@ export default function InitialSuperAdminSetupPage() {
       setError("A senha deve ter pelo menos 8 caracteres.");
       return;
     }
-
     if (password !== confirmPassword) {
       setError("As senhas não conferem.");
       return;
     }
 
     setLoading(true);
-
     try {
       const supabase = createClient();
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.trim(),
         password,
-        options: {
-          data: { full_name: fullName.trim() },
-        },
+        options: { data: { full_name: fullName.trim() } },
       });
 
       if (signUpError) {
@@ -85,7 +81,7 @@ export default function InitialSuperAdminSetupPage() {
         return;
       }
 
-      setMessage("Conta criada. Confirme seu e-mail e depois entre para concluir a configuração do Super Admin.");
+      setMessage("Conta criada. Confirme seu e-mail e depois use o botão abaixo para concluir a configuração do Super Admin.");
     } catch {
       setError("Não foi possível concluir a configuração agora.");
     } finally {
@@ -129,7 +125,7 @@ export default function InitialSuperAdminSetupPage() {
           <button type="submit" disabled={loading} className="w-full rounded-xl bg-[#D4AF37] px-4 py-3 font-semibold text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60">{loading ? "Configurando..." : "Criar primeiro Super Admin"}</button>
         </form>
 
-        <Link href="/login" className="mt-5 block text-center text-sm text-zinc-500 hover:text-white">Já possui acesso? Entrar</Link>
+        <Link href="/login?bootstrap=1" className="mt-5 block text-center text-sm text-zinc-500 hover:text-white">Já criou a conta? Finalizar configuração</Link>
       </section>
     </main>
   );
