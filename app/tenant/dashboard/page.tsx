@@ -1,0 +1,1 @@
+import {RolePage} from '@/components/RolePage'; export default function Page(){return <RolePage title="Tenant Owner" links={['Barbearias|/tenant/shops','Equipe|/tenant/staff','Serviços|/tenant/services','Agenda|/tenant/appointments']}/>}
