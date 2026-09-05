@@ -14,11 +14,15 @@ export default function BarbeariasPage() {
       <header className="master-header">
         <div className="master-brand">
           <div className="master-logo">Barba<span>10</span></div>
-          <div className="master-slogan">Barbearias</div>
+          <div className="master-slogan">Painel Master</div>
         </div>
       </header>
 
       <section className="barbearias-page">
+        <div className="barbearias-page-title">
+          <h1>Barbearias</h1>
+        </div>
+
         <div className="barbearias-actions">
           <button className="barbearias-register-button" type="button">
             Cadastrar Barbearia
@@ -27,10 +31,7 @@ export default function BarbeariasPage() {
 
         <section className="barbearias-filter-card" aria-label="Filtro de barbearias">
           <div className="barbearias-filter-heading">
-            <div>
-              <h1>Barbearias cadastradas</h1>
-              <p>Pesquise uma barbearia pelo nome.</p>
-            </div>
+            <h2>Pesquisar barbearia</h2>
           </div>
 
           <label className="barbearias-search-label" htmlFor="barbearias-search">
