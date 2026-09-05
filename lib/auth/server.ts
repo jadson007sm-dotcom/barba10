@@ -55,7 +55,9 @@ export async function getAccessContext(surface: AppSurface, tenantSlug: string |
 
   if (surface === "barbershop" && tenantSlug) {
     const tenant = await getTenantBySlug(tenantSlug);
-    if (!tenant) return { user, allowed: false as const, tenant: null, role: null };
+    if (!tenant || tenant.status !== "active") {
+      return { user, allowed: false as const, tenant: null, role: null };
+    }
 
     const membership = await getTenantMembership(user.id, tenant.id);
     return {
@@ -70,15 +72,18 @@ export async function getAccessContext(surface: AppSurface, tenantSlug: string |
     const supabase = await createClient();
     const { data } = await supabase
       .from("tenant_members")
-      .select("role")
+      .select("tenant_id, role")
       .eq("user_id", user.id)
+      .in("role", surface === "barber" ? ["barber"] : ["customer"])
+      .limit(1)
       .maybeSingle();
 
-    if (surface === "barber") {
-      return { user, allowed: data?.role === "barber", tenant: null, role: data?.role ?? null };
-    }
-
-    return { user, allowed: data?.role === "customer", tenant: null, role: data?.role ?? null };
+    return {
+      user,
+      allowed: Boolean(data),
+      tenant: null,
+      role: data?.role ?? null,
+    };
   }
 
   return { user, allowed: true as const, tenant: null, role: null };
