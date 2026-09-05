@@ -8,7 +8,7 @@ import { trackLandingEvent } from "@/components/landing-analytics";
 function slugify(value: string) {
   return value
     .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
@@ -54,10 +54,9 @@ export default function CadastroPage() {
     });
 
     if (error) {
-      const text =
-        error.message.includes("slug_unavailable")
-          ? "Esse endereço já está em uso. Escolha outro."
-          : "Não foi possível criar a barbearia agora.";
+      const text = error.message.includes("slug_unavailable")
+        ? "Esse endereço já está em uso. Escolha outro."
+        : "Não foi possível criar a barbearia agora.";
       throw new Error(text);
     }
 
