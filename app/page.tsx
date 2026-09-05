@@ -29,6 +29,12 @@ export default async function HomePage() {
           >
             Entrar
           </Link>
+          <Link
+            href="/cadastro"
+            className="mt-3 flex w-full justify-center rounded-2xl border border-zinc-800 px-5 py-3 text-sm font-semibold text-zinc-300 hover:bg-zinc-900"
+          >
+            Cadastrar barbearia
+          </Link>
         </div>
       </main>
     );

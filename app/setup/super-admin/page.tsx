@@ -18,19 +18,21 @@ export default function InitialSuperAdminSetupPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    void supabase.rpc("is_initial_super_admin_setup_available").then(({ data, error: statusError }) => {
-      if (statusError) {
-        setError("Não foi possível verificar a configuração inicial.");
-        setAvailable(false);
-        return;
+    void (supabase.rpc as any)("is_initial_super_admin_setup_available").then(
+      ({ data, error: statusError }: { data: boolean | null; error: any }) => {
+        if (statusError) {
+          setError("Não foi possível verificar a configuração inicial.");
+          setAvailable(false);
+          return;
+        }
+        setAvailable(Boolean(data));
       }
-      setAvailable(Boolean(data));
-    });
+    );
   }, []);
 
   async function finishBootstrap() {
     const supabase = createClient();
-    const { error: bootstrapError } = await supabase.rpc("bootstrap_first_super_admin", {
+    const { error: bootstrapError } = await (supabase.rpc as any)("bootstrap_first_super_admin", {
       p_full_name: fullName.trim(),
     });
 

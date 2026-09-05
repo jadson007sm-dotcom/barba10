@@ -2,44 +2,72 @@ import { createClient } from "@/lib/supabase/server";
 import type { AppSurface } from "./host";
 
 export async function getAuthenticatedUser() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return null;
+    }
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data.user) return null;
-  return data.user;
+    if (error || !data.user) return null;
+    return data.user;
+  } catch {
+    return null;
+  }
 }
 
 export async function getUserGlobalRoles(userId: string) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("user_global_roles")
-    .select("role")
-    .eq("user_id", userId);
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return [];
+    }
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("user_global_roles")
+      .select("role")
+      .eq("user_id", userId);
 
-  return (data ?? []).map((item) => item.role as string);
+    return (data ?? []).map((item) => item.role as string);
+  } catch {
+    return [];
+  }
 }
 
 export async function getTenantBySlug(slug: string) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("tenants")
-    .select("id, name, slug, status")
-    .eq("slug", slug)
-    .maybeSingle();
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return null;
+    }
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("tenants")
+      .select("id, name, slug, status")
+      .eq("slug", slug)
+      .maybeSingle();
 
-  return data;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export async function getTenantMembership(userId: string, tenantId: string) {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("tenant_members")
-    .select("id, role, tenant_id")
-    .eq("user_id", userId)
-    .eq("tenant_id", tenantId)
-    .maybeSingle();
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return null;
+    }
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("tenant_members")
+      .select("id, role, tenant_id")
+      .eq("user_id", userId)
+      .eq("tenant_id", tenantId)
+      .maybeSingle();
 
-  return data;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export async function getAccessContext(surface: AppSurface, tenantSlug: string | null) {

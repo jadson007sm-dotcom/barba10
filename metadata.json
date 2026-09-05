@@ -1,0 +1,6 @@
+{
+  "name": "Barba10",
+  "description": "Agendamento e gestão para barbearia",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

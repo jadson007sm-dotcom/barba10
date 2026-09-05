@@ -3,12 +3,8 @@ import { cookies } from "next/headers";
 
 export async function createClient() {
   const cookieStore = cookies();
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-
-  if (!url || !key) {
-    throw new Error("Supabase não configurado: defina NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.");
-  }
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-barba10.supabase.co";
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.placeholder";
 
   return createServerClient(url, key, {
     cookies: {

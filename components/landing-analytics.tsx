@@ -14,20 +14,28 @@ export async function trackLandingEvent(
   eventType: "page_view" | "cta_signup_click" | "signup_started" | "signup_completed",
   path = window.location.pathname
 ) {
-  const sessionId =
-    window.sessionStorage.getItem("barba10_session_id") ?? crypto.randomUUID();
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+      return;
+    }
 
-  window.sessionStorage.setItem("barba10_session_id", sessionId);
+    const sessionId =
+      window.sessionStorage.getItem("barba10_session_id") ?? crypto.randomUUID();
 
-  const supabase = createClient();
-  await supabase.from("site_events").insert({
-    event_type: eventType,
-    path,
-    session_id: sessionId,
-    referrer: document.referrer || null,
-    source: new URLSearchParams(window.location.search).get("utm_source"),
-    device_type: getDeviceType(),
-  });
+    window.sessionStorage.setItem("barba10_session_id", sessionId);
+
+    const supabase = createClient();
+    await supabase.from("site_events").insert({
+      event_type: eventType,
+      path,
+      session_id: sessionId,
+      referrer: document.referrer || null,
+      source: new URLSearchParams(window.location.search).get("utm_source"),
+      device_type: getDeviceType(),
+    });
+  } catch {
+    // Silently ignore analytics errors when offline or unconfigured
+  }
 }
 
 export function LandingAnalytics() {
