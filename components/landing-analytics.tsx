@@ -10,32 +10,10 @@ function getDeviceType() {
   return "desktop" as const;
 }
 
-export function LandingAnalytics() {
-  useEffect(() => {
-    let sessionId = window.sessionStorage.getItem("barba10_session_id");
-    if (!sessionId) {
-      sessionId = crypto.randomUUID();
-      window.sessionStorage.setItem("barba10_session_id", sessionId);
-    }
-
-    const supabase = createClient();
-    const referrer = document.referrer || null;
-    const source = new URLSearchParams(window.location.search).get("utm_source");
-
-    void supabase.from("site_events").insert({
-      event_type: "page_view",
-      path: window.location.pathname,
-      session_id: sessionId,
-      referrer,
-      source,
-      device_type: getDeviceType(),
-    });
-  }, []);
-
-  return null;
-}
-
-export async function trackLandingCta() {
+export async function trackLandingEvent(
+  eventType: "page_view" | "cta_signup_click" | "signup_started" | "signup_completed",
+  path = window.location.pathname
+) {
   const sessionId =
     window.sessionStorage.getItem("barba10_session_id") ?? crypto.randomUUID();
 
@@ -43,11 +21,19 @@ export async function trackLandingCta() {
 
   const supabase = createClient();
   await supabase.from("site_events").insert({
-    event_type: "cta_signup_click",
-    path: window.location.pathname,
+    event_type: eventType,
+    path,
     session_id: sessionId,
     referrer: document.referrer || null,
     source: new URLSearchParams(window.location.search).get("utm_source"),
     device_type: getDeviceType(),
   });
+}
+
+export function LandingAnalytics() {
+  useEffect(() => {
+    void trackLandingEvent("page_view");
+  }, []);
+
+  return null;
 }
