@@ -35,7 +35,15 @@ export default function MasterPage() {
       </header>
 
       <aside className={`master-sidebar${menuOpen ? " open" : ""}`} aria-label="Menu lateral">
-        <div className="sidebar-content" />
+        <div className="sidebar-content">
+          <button
+            className="sidebar-menu-button"
+            type="button"
+            onClick={() => setMenuOpen(false)}
+          >
+            Barbearias
+          </button>
+        </div>
       </aside>
     </main>
   );
