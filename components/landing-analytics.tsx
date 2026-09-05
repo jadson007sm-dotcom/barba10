@@ -33,6 +33,15 @@ export async function trackLandingEvent(
 export function LandingAnalytics() {
   useEffect(() => {
     void trackLandingEvent("page_view");
+
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const link = target?.closest<HTMLAnchorElement>('a[href="/cadastro"]');
+      if (link) void trackLandingEvent("cta_signup_click");
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
   }, []);
 
   return null;
