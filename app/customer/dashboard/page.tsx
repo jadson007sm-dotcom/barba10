@@ -1,0 +1,1 @@
+import {RolePage} from '@/components/RolePage'; export default function Page(){return <RolePage title="Minha conta" links={['Novo agendamento|/barba10/booking','Histórico|/customer/history','Fidelidade|/customer/loyalty']}/>}
