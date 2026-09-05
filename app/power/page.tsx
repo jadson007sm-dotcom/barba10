@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { resolveAppSurface } from "@/lib/auth/host";
 import { getAccessContext } from "@/lib/auth/server";
-import { PowerAdmin, type PowerAudit, type PowerMember, type PowerTenant } from "@/components/power-admin";
+import { PowerAdmin, type PowerAudit, type PowerMember, type PowerOwner, type PowerTenant } from "@/components/power-admin";
 
 export default async function PowerPage() {
   const host = headers().get("host") ?? "";
@@ -15,18 +15,20 @@ export default async function PowerPage() {
 
   const supabase = await createClient();
   const startIso = new Date(Date.now() - 29 * 24 * 60 * 60 * 1000).toISOString();
-  const [{ data: tenantRows }, { data: memberRows }, { data: auditRows }] = await Promise.all([
-    supabase.from("tenants").select("id,name,slug,status,created_at,owner_user_id,profiles!tenants_owner_user_id_fkey(full_name,phone),tenant_members(id)").order("created_at", { ascending: false }).limit(200),
+  const [{ data: tenantRows }, { data: memberRows }, { data: auditRows }, { data: ownerRows }] = await Promise.all([
+    supabase.from("tenants").select("id,name,slug,status,created_at,owner_user_id,profiles!tenants_owner_user_id_fkey(full_name,email,phone),tenant_members(id)").order("created_at", { ascending: false }).limit(200),
     supabase.from("tenant_members").select("id,tenant_id,user_id,role,tenants(name),profiles(full_name)").order("created_at", { ascending: false }).limit(500),
     supabase.from("admin_audit_logs").select("id,action,target_type,target_id,created_at,metadata").gte("created_at", startIso).order("created_at", { ascending: false }).limit(100),
+    supabase.from("profiles").select("id,full_name,email,phone").order("full_name", { ascending: true }).limit(500),
   ]);
 
   const tenants: PowerTenant[] = (tenantRows ?? []).map((t: any) => ({
     id: t.id, name: t.name, slug: t.slug, status: t.status, created_at: t.created_at, owner_user_id: t.owner_user_id,
-    owner_name: t.profiles?.full_name ?? null, owner_phone: t.profiles?.phone ?? null, member_count: Array.isArray(t.tenant_members) ? t.tenant_members.length : 0,
+    owner_name: t.profiles?.full_name ?? null, owner_email: t.profiles?.email ?? null, owner_phone: t.profiles?.phone ?? null, member_count: Array.isArray(t.tenant_members) ? t.tenant_members.length : 0,
   }));
   const members: PowerMember[] = (memberRows ?? []).map((m: any) => ({ id: m.id, tenant_id: m.tenant_id, user_id: m.user_id, role: m.role, tenant_name: m.tenants?.name ?? "—", user_name: m.profiles?.full_name ?? null }));
   const audits: PowerAudit[] = (auditRows ?? []).map((a: any) => ({ id: a.id, action: a.action, target_type: a.target_type, target_id: a.target_id, created_at: a.created_at, metadata: a.metadata ?? {} }));
+  const owners: PowerOwner[] = (ownerRows ?? []).map((o: any) => ({ id: o.id, full_name: o.full_name ?? null, email: o.email ?? null, phone: o.phone ?? null }));
 
   const [{ count: pageViews }, { count: ctaClicks }, { count: signupStarted }, { count: signupCompleted }, { data: eventRows }] = await Promise.all([
     supabase.from("site_events").select("id", { count: "exact", head: true }).eq("event_type", "page_view").gte("created_at", startIso),
@@ -38,5 +40,5 @@ export default async function PowerPage() {
   const sessions = new Set((eventRows ?? []).map((r) => r.session_id)).size;
   const devices = { mobile: 0, tablet: 0, desktop: 0, unknown: 0 };
   for (const row of eventRows ?? []) { const key = row.device_type as keyof typeof devices; if (key in devices) devices[key] += 1; }
-  return <PowerAdmin tenants={tenants} members={members} audits={audits} metrics={{ pageViews: pageViews ?? 0, ctaClicks: ctaClicks ?? 0, signupStarted: signupStarted ?? 0, signupCompleted: signupCompleted ?? 0, sessions, devices }} />;
+  return <PowerAdmin tenants={tenants} members={members} owners={owners} audits={audits} metrics={{ pageViews: pageViews ?? 0, ctaClicks: ctaClicks ?? 0, signupStarted: signupStarted ?? 0, signupCompleted: signupCompleted ?? 0, sessions, devices }} />;
 }
