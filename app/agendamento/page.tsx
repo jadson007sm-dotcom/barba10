@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./agendamento.css";
 import { createClient } from "@/lib/supabase";
-import ClienteMenu from "@/app/cliente/ClienteMenu";
 
 type Step = "date" | "barber" | "time" | "service" | "summary";
 type Barber = { id: string; name: string; active: boolean };
@@ -147,7 +146,7 @@ export default function ClientBookingPage() {
   const restart = () => { setStep("date"); setDate(""); setTime(""); setBarber(""); setServices([]); setConfirmed(false); setError(""); };
 
   return <main className="booking-shell">
-    <header className="booking-header"><div className="booking-brand">Barba<span>10</span></div><div className="booking-shop-name">{barbershopName}</div><ClienteMenu /></header>
+    <header className="booking-header"><div className="booking-brand">Barba<span>10</span></div><div className="booking-shop-name">{barbershopName}</div></header>
     <section className="booking-content"><div className="booking-progress">{steps.map((item, index) => <span key={item} className={steps.indexOf(step) >= index ? "done" : ""} />)}</div>
       <div className="booking-card"><span className="booking-kicker">AGENDAMENTO</span><h1>{confirmed ? "Agendamento confirmado" : stepTitle[step]}</h1><p className="booking-subtitle">{confirmed ? "Seu agendamento foi registrado com sucesso." : "Horários calculados conforme funcionamento, duração do serviço e disponibilidade do barbeiro."}</p>
         {!confirmed && step === "date" && <div className="calendar"><div className="calendar-nav"><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} disabled={month <= new Date(today.getFullYear(), today.getMonth(), 1)}>‹</button><strong>{monthNames[month.getMonth()]} {month.getFullYear()}</strong><button type="button" onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}>›</button></div><div className="weekdays">{["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"].map((day) => <span key={day}>{day}</span>)}</div><div className="calendar-grid">{calendar.map((day, index) => { const current = day.getMonth() === month.getMonth(); const past = day < today; const key = toDateKey(day); return <button key={`${key}-${index}`} type="button" disabled={!current || past} className={`${date === key ? "selected " : ""}${!current ? "muted " : ""}`} onClick={() => { setDate(key); setTime(""); }}>{day.getDate()}</button>; })}</div></div>}
