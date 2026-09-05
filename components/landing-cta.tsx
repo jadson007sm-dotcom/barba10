@@ -1,13 +1,13 @@
-"use client";
+`use client`;
 
 import Link from "next/link";
-import { trackLandingCta } from "./landing-analytics";
+import { trackLandingEvent } from "./landing-analytics";
 
 export function LandingCta({ className = "" }: { className?: string }) {
   return (
     <Link
       href="/cadastro"
-      onClick={() => void trackLandingCta()}
+      onClick={() => void trackLandingEvent("cta_signup_click")}
       className={className}
     >
       Cadastrar minha barbearia
