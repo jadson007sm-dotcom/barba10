@@ -8,6 +8,7 @@ import { trackLandingEvent } from "@/components/landing-analytics";
 function slugify(value: string) {
   return value
     .normalize("NFD")
+    // Use an explicit Unicode combining-mark range for the project's ES target.
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
