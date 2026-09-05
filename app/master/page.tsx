@@ -39,7 +39,10 @@ export default function MasterPage() {
           <button
             className="sidebar-menu-button"
             type="button"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              window.location.href = "/master/barbearias";
+            }}
           >
             Barbearias
           </button>
