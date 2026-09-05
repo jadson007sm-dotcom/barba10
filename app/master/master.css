@@ -1,80 +1,109 @@
-.master-shell { min-height: 100vh; background: radial-gradient(circle at 50% -12%, #242424 0, #0b0b0d 34%); color: #fff; }
-.master-shell .barbearias-panel { max-width: 1180px; min-height: 100vh; margin: 0 auto; padding: 112px 24px 44px; }
-.master-shell .barbearias-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-.master-shell .barbearias-header h1 { margin: 0; color: #fff; font-size: 30px; font-weight: 800; letter-spacing: -.6px; }
-.master-shell .barbearias-count { min-width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; padding: 0 11px; border: 1px solid #514820; border-radius: 999px; color: #f5c542; background: #181712; font-size: 13px; font-weight: 800; }
-.master-shell .barbearias-filters { margin-bottom: 18px; padding: 14px; border: 1px solid #29292d; border-radius: 18px; background: rgba(17,17,20,.92); box-shadow: 0 16px 45px rgba(0,0,0,.2); }
-.master-shell .compact-filter-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
-.master-shell .smart-search { min-width: 0; height: 46px; display: flex; align-items: center; gap: 10px; padding: 0 13px; border: 1px solid #303036; border-radius: 11px; background: #111114; }
-.master-shell .smart-search > span { color: #f5c542; font-size: 21px; line-height: 1; }
-.master-shell .smart-search input { width: 100%; min-width: 0; border: 0; outline: 0; color: #fff; background: transparent; font-size: 14px; }
-.master-shell .smart-search input::placeholder { color: #66666e; }
-.master-shell .smart-search:focus-within { border-color: #f5c542; box-shadow: 0 0 0 3px rgba(245,197,66,.08); }
-.master-shell .clear-search { width: 28px; height: 28px; border: 0; border-radius: 8px; color: #8f8f97; background: #18181c; cursor: pointer; }
-.master-shell .clear-search:hover { color: #f5c542; }
-.master-shell .filter-toggle { min-width: 112px; height: 46px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; border: 1px solid #34343a; border-radius: 11px; color: #d8d8dc; background: #18181c; font-size: 13px; font-weight: 800; cursor: pointer; }
-.master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color: #f5c542; color: #f5c542; background: #211f16; }
-.master-shell .filter-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; gap: 10px; align-items: end; margin-top: 12px; padding-top: 12px; border-top: 1px solid #29292d; }
-.master-shell .filter-select { display: grid; gap: 7px; }
-.master-shell .filter-select > span { color: #8f8f97; font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; }
-.master-shell .filter-select select { width: 100%; height: 42px; border: 1px solid #303036; border-radius: 10px; padding: 0 12px; color: #fff; background: #111114; outline: 0; }
-.master-shell .filter-select select:focus { border-color: #f5c542; }
-.master-shell .clear-filters { height: 42px; padding: 0 14px; border: 1px solid #514820; border-radius: 10px; color: #f5c542; background: #181712; font-size: 12px; font-weight: 800; cursor: pointer; }
-.master-shell .clear-filters:hover { background: #211f16; }
-.master-shell .barbearias-empty-filter { min-height: 330px; display: grid; place-items: center; align-content: center; padding: 40px 24px; border: 1px dashed #34343a; border-radius: 18px; background: rgba(17,17,20,.78); text-align: center; }
-.master-shell .empty-filter-icon { width: 58px; height: 58px; display: grid; place-items: center; margin: 0 auto 18px; border: 1px solid #514820; border-radius: 15px; color: #f5c542; background: #181712; font-size: 23px; }
-.master-shell .barbearias-empty-filter h2 { margin: 0; color: #f1f1f3; font-size: 18px; }
-.master-shell .barbearias-empty-filter p { max-width: 500px; margin: 8px 0 0; color: #77777f; font-size: 13px; line-height: 1.55; }
-.master-shell .barbearias-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.master-shell .barbearia-card { padding: 20px; border: 1px solid #29292d; border-radius: 18px; background: rgba(17,17,20,.92); box-shadow: 0 16px 45px rgba(0,0,0,.2); }
-.master-shell .barbearia-card:hover { border-color: #514820; }
-.master-shell .barbershop-card-top { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
-.master-shell .barbershop-card-top h2 { margin:10px 0 0; font-size:18px; line-height:1.2; }
-.master-shell .card-date { color:#66666e; font-size:11px; white-space:nowrap; }
-.master-shell .status-badge { display:inline-flex; align-items:center; min-height:24px; padding:0 9px; border-radius:999px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
-.master-shell .status-badge.active { color:#f5c542; background:#211f16; border:1px solid #514820; }
-.master-shell .status-badge.inactive { color:#aaaab1; background:#18181c; border:1px solid #34343a; }
-.master-shell .barbershop-details { display:grid; gap:10px; margin:18px 0; padding-top:16px; border-top:1px solid #29292d; }
-.master-shell .barbershop-details p { display:grid; gap:3px; margin:0; color:#b4b4ba; font-size:12px; }
-.master-shell .barbershop-details strong { color:#6f6f77; font-size:10px; letter-spacing:.6px; text-transform:uppercase; }
-.master-shell .barbershop-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding-top:14px; border-top:1px solid #29292d; }
-.master-shell .action-button { min-height:40px; border:1px solid #34343a; border-radius:10px; color:#d8d8dc; background:#18181c; font-size:12px; font-weight:800; cursor:pointer; }
-.master-shell .action-button:hover { border-color:#f5c542; color:#f5c542; background:#211f16; }
-.master-shell .action-button.activate { border-color:#514820; color:#f5c542; background:#181712; }
-.master-shell .action-button.danger { grid-column:1 / -1; border-color:#4a2929; color:#e2a5a5; background:#1b1212; }
-.master-shell .action-button.danger:hover { border-color:#8b4444; color:#ffb4b4; background:#241515; }
-.master-shell .action-button:disabled { opacity:.55; cursor:wait; }
-.master-shell .master-feedback { margin:0 0 18px; padding:12px 14px; border:1px solid #514820; border-radius:11px; color:#f5c542; background:#181712; font-size:12px; }
-.master-shell .panel-subtitle { margin:6px 0 0; color:#77777f; font-size:13px; }
-.master-shell .vision-panel { padding-top:150px; }
-.master-shell .vision-panel h1 { max-width:760px; margin:10px 0 14px; font-size:46px; line-height:1.05; letter-spacing:-1.3px; }
-.master-shell .vision-panel > p { max-width:650px; color:#8d8d95; line-height:1.7; }
-.master-shell .vision-benefits { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:30px 0; }
-.master-shell .vision-benefits > div,.master-shell .my-barbershop-card { padding:18px; border:1px solid #29292d; border-radius:16px; background:#111114; }
-.master-shell .vision-benefits strong,.master-shell .vision-benefits span { display:block; }
-.master-shell .vision-benefits strong { font-size:13px; }
-.master-shell .vision-benefits span { margin-top:6px; color:#77777f; font-size:12px; line-height:1.5; }
-.master-shell .primary-button { min-height:44px; padding:0 18px; border:1px solid #f5c542; border-radius:10px; color:#111114; background:#f5c542; font-size:12px; font-weight:900; cursor:pointer; }
-.master-shell .primary-button:hover { background:#ffd866; }
-.master-shell .primary-button:disabled { opacity:.55; cursor:wait; }
-.master-shell .my-barbershop-card { max-width:700px; margin-top:30px; padding:28px; }
-.master-shell .my-barbershop-card h2 { margin:10px 0; font-size:26px; }
-.master-shell .my-barbershop-card p { color:#77777f; line-height:1.6; margin-bottom:22px; }
-.master-shell .master-modal-backdrop { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.72); backdrop-filter:blur(6px); }
-.master-shell .master-modal { width:min(760px,100%); max-height:90vh; overflow:auto; padding:24px; border:1px solid #34343a; border-radius:18px; background:#101013; box-shadow:0 30px 90px rgba(0,0,0,.5); }
-.master-shell .modal-header { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; margin-bottom:20px; }
-.master-shell .modal-header h2 { margin:7px 0 0; font-size:24px; }
-.master-shell .modal-close { width:36px; height:36px; border:1px solid #34343a; border-radius:10px; color:#aaaab1; background:#18181c; font-size:22px; cursor:pointer; }
-.master-shell .modal-close:hover { color:#f5c542; border-color:#f5c542; }
-.master-shell .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:20px; padding-top:18px; border-top:1px solid #29292d; }
+.master-shell {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% -12%, #242424 0, #0b0b0d 34%);
+  color: #fff;
+}
 
-/* Filtro compacto: estado inicial fechado; ícone abre/fecha os controles. */
-.master-shell .filter-toggle { width:38px; min-width:38px; height:38px; padding:0; gap:0; border-radius:9px; font-size:0; color:#8f8f97; background:#151518; }
-.master-shell .filter-toggle span { font-size:18px; line-height:1; }
-.master-shell .filter-toggle:hover, .master-shell .filter-toggle.active { border-color:#514820; color:#f5c542; background:#181712; }
-/* O estado React atual usa active=true no estado inicial; aqui active representa filtro fechado. */
-.master-shell .barbearias-filters:has(.filter-toggle.active) .filter-controls { display:grid; }
-.master-shell .barbearias-filters:has(.filter-toggle:not(.active)) .filter-controls { display:none; }
+.master-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 11, 13, 0.88);
+  backdrop-filter: blur(14px);
+}
 
-@media (max-width:800px){.master-shell .barbearias-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.master-shell .filter-controls{grid-template-columns:1fr 1fr}.master-shell .clear-filters{grid-column:1 / -1}.master-shell .vision-benefits{grid-template-columns:1fr}.master-shell .vision-panel h1{font-size:38px}}
-@media (max-width:560px){.master-shell .barbearias-panel{padding:100px 14px 32px}.master-shell .barbearias-header h1{font-size:25px}.master-shell .barbearias-filters{padding:10px;border-radius:15px}.master-shell .compact-filter-row{grid-template-columns:1fr auto}.master-shell .filter-toggle{width:38px;min-width:38px}.master-shell .filter-controls{grid-template-columns:1fr}.master-shell .clear-filters{grid-column:auto}.master-shell .barbearias-empty-filter{min-height:280px;padding:32px 18px}.master-shell .barbearias-grid{grid-template-columns:1fr}.master-shell .barbearia-card{padding:16px}.master-shell .vision-panel{padding-top:120px}.master-shell .vision-panel h1{font-size:32px}.master-shell .master-modal{padding:18px;border-radius:15px}.master-shell .modal-actions{flex-direction:column-reverse}.master-shell .modal-actions>*{width:100%}}
+.master-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.master-logo {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+}
+
+.master-logo span {
+  color: #f5c542;
+}
+
+.master-slogan {
+  padding-left: 12px;
+  border-left: 1px solid #34343a;
+  color: #b4b4ba;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.menu-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-content: center;
+  gap: 5px;
+  border: 1px solid #34343a;
+  border-radius: 10px;
+  color: #fff;
+  background: #18181c;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  border-color: #f5c542;
+}
+
+.menu-button span {
+  width: 19px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.master-sidebar {
+  position: fixed;
+  top: 72px;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  width: min(320px, 86vw);
+  transform: translateX(100%);
+  border-left: 1px solid #29292d;
+  background: rgba(16, 16, 19, 0.98);
+  box-shadow: -18px 0 50px rgba(0, 0, 0, 0.35);
+  transition: transform 180ms ease;
+}
+
+.master-sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-content {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 560px) {
+  .master-header {
+    height: 64px;
+    padding: 0 14px;
+  }
+
+  .master-sidebar {
+    top: 64px;
+  }
+
+  .master-logo {
+    font-size: 22px;
+  }
+
+  .master-slogan {
+    font-size: 12px;
+  }
+}
