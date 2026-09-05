@@ -1,0 +1,1 @@
+import {Card} from '@/components/ui/card'; export function DashboardStats({stats}:{stats:{label:string;value:number}[]}){return <div className="grid gap-4 md:grid-cols-3">{stats.map(x=><Card key={x.label}><div className="text-3xl font-bold">{x.value}</div><div>{x.label}</div></Card>)}</div>}
