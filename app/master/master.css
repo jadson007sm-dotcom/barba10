@@ -66,6 +66,12 @@
   background: currentColor;
 }
 
+.master-content {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 72px;
+}
+
 .master-sidebar {
   position: fixed;
   top: 72px;
@@ -120,16 +126,10 @@
 }
 
 .barbearias-page {
-  min-height: 100vh;
-  padding: 104px 24px 32px;
-  box-sizing: border-box;
-}
-
-.barbearias-actions,
-.barbearias-filter-card,
-.barbearias-results {
   width: min(100%, 900px);
   margin: 0 auto;
+  padding: 28px 24px 32px;
+  box-sizing: border-box;
 }
 
 .barbearias-actions {
@@ -258,8 +258,12 @@
     padding: 14px 10px;
   }
 
+  .master-content {
+    padding-top: 64px;
+  }
+
   .barbearias-page {
-    padding: 88px 14px 24px;
+    padding: 20px 14px 24px;
   }
 
   .barbearias-actions {
