@@ -119,6 +119,122 @@
   transform: scale(0.98);
 }
 
+.barbearias-page {
+  min-height: 100vh;
+  padding: 104px 24px 32px;
+  box-sizing: border-box;
+}
+
+.barbearias-actions,
+.barbearias-filter-card,
+.barbearias-results {
+  width: min(100%, 900px);
+  margin: 0 auto;
+}
+
+.barbearias-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.barbearias-register-button {
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid #f5c542;
+  border-radius: 10px;
+  color: #101013;
+  background: #f5c542;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.barbearias-register-button:hover {
+  filter: brightness(1.06);
+}
+
+.barbearias-register-button:active {
+  transform: scale(0.98);
+}
+
+.barbearias-filter-card {
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #29292d;
+  border-radius: 14px;
+  background: rgba(18, 18, 22, 0.94);
+}
+
+.barbearias-filter-heading h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.barbearias-filter-heading p {
+  margin: 6px 0 18px;
+  color: #a8a8af;
+  font-size: 13px;
+}
+
+.barbearias-search-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #d8d8dd;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.barbearias-search-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border: 1px solid #34343a;
+  border-radius: 10px;
+  outline: none;
+  color: #fff;
+  background: #101013;
+  font: inherit;
+  font-size: 14px;
+}
+
+.barbearias-search-input:focus {
+  border-color: #f5c542;
+}
+
+.barbearias-results {
+  margin-top: 18px;
+}
+
+.barbearias-empty-state {
+  padding: 34px 20px;
+  border: 1px dashed #34343a;
+  border-radius: 14px;
+  text-align: center;
+  background: rgba(18, 18, 22, 0.72);
+}
+
+.barbearias-empty-state h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.barbearias-empty-state p {
+  margin: 8px 0 0;
+  color: #a8a8af;
+  font-size: 13px;
+}
+
+.barbearia-card {
+  padding: 18px;
+  border: 1px solid #29292d;
+  border-radius: 12px;
+  background: #121216;
+}
+
 @media (max-width: 560px) {
   .master-header {
     height: 64px;
@@ -140,5 +256,21 @@
 
   .sidebar-content {
     padding: 14px 10px;
+  }
+
+  .barbearias-page {
+    padding: 88px 14px 24px;
+  }
+
+  .barbearias-actions {
+    justify-content: stretch;
+  }
+
+  .barbearias-register-button {
+    width: 100%;
+  }
+
+  .barbearias-filter-card {
+    padding: 16px;
   }
 }
