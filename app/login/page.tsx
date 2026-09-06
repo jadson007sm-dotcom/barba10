@@ -45,9 +45,15 @@ function LoginForm() {
         return;
       }
 
+      try {
+        await (supabase.rpc as any)("claim_first_super_admin");
+      } catch {
+        // segue para o direcionamento
+      }
+
       // Nesta fase do BARBA10, o destino do login é o Power.
       // A rota /power faz a autorização definitiva no servidor.
-      window.location.replace("/power");
+      window.location.assign("/power");
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {

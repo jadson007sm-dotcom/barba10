@@ -91,7 +91,21 @@ export async function getAccessContext(surface: AppSurface, tenantSlug: string |
   const globalRoles = await getUserGlobalRoles(user.id);
 
   if (surface === "power") {
-    const allowed = globalRoles.includes("super_admin");
+    let allowed = globalRoles.includes("super_admin");
+
+    if (!allowed) {
+      try {
+        const supabase = await createClient();
+        const { data: claimed } = await (supabase.rpc as any)("claim_first_super_admin");
+        if (claimed === true) {
+          const updatedRoles = await getUserGlobalRoles(user.id);
+          allowed = updatedRoles.includes("super_admin");
+        }
+      } catch {
+        // segue com validação padrão
+      }
+    }
+
     return { user, allowed, tenant: null, role: allowed ? "super_admin" : null };
   }
 

@@ -6,10 +6,6 @@ import { getAccessContext } from "@/lib/auth/server";
 import { PowerAdmin, type PowerAudit, type PowerMember, type PowerOwner, type PowerTenant } from "@/components/power-admin";
 
 export default async function PowerPage() {
-  const host = headers().get("host") ?? "";
-  const { surface } = resolveAppSurface(host);
-  const isCustomDomain = host.toLowerCase().includes("barba10.com");
-  if (isCustomDomain && surface !== "power") redirect("/403");
   const access = await getAccessContext("power", null);
   if (!access.user) redirect("/login");
   if (!access.allowed) redirect("/403");
