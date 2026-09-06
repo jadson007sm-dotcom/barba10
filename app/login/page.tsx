@@ -1,11 +1,10 @@
 "use client";
 
 import { FormEvent, Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const bootstrap = searchParams.get("bootstrap") === "1";
   const [email, setEmail] = useState("");
@@ -41,14 +40,24 @@ function LoginForm() {
         }
       }
 
-      const { data: roleRows } = await supabase
+      const { data: roleRows, error: roleError } = await supabase
         .from("user_global_roles")
         .select("role")
         .eq("user_id", data.user.id);
 
+      if (roleError) {
+        setError("A conta foi autenticada, mas não foi possível validar a permissão administrativa.");
+        return;
+      }
+
       const isSuperAdmin = (roleRows as Array<{ role: string }> | null)?.some((row) => row.role === "super_admin") ?? false;
-      router.replace(isSuperAdmin ? "/power" : "/");
-      router.refresh();
+
+      if (isSuperAdmin) {
+        window.location.assign("/power");
+        return;
+      }
+
+      window.location.assign("/");
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {
