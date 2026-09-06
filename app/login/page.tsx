@@ -34,30 +34,20 @@ function LoginForm() {
           p_full_name: (data.user.user_metadata?.full_name as string | undefined) ?? "Super Admin",
         });
 
-        if (bootstrapError && !bootstrapError.message.includes("super admin already configured")) {
+        if (bootstrapError && !bootstrapError.message.toLowerCase().includes("already configured")) {
           setError("A conta foi autenticada, mas não foi possível concluir a configuração do Super Admin.");
           return;
         }
       }
 
-      const { data: roleRows, error: roleError } = await supabase
-        .from("user_global_roles")
-        .select("role")
-        .eq("user_id", data.user.id);
+      const { data: isSuperAdmin, error: permissionError } = await (supabase.rpc as any)("has_current_user_super_admin");
 
-      if (roleError) {
+      if (permissionError) {
         setError("A conta foi autenticada, mas não foi possível validar a permissão administrativa.");
         return;
       }
 
-      const isSuperAdmin = (roleRows as Array<{ role: string }> | null)?.some((row) => row.role === "super_admin") ?? false;
-
-      if (isSuperAdmin) {
-        window.location.assign("/power");
-        return;
-      }
-
-      window.location.assign("/");
+      window.location.assign(isSuperAdmin ? "/power" : "/");
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {
