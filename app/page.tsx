@@ -2,7 +2,7 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { resolveAppSurface } from "@/lib/auth/host";
-import { getAccessContext } from "@/lib/auth/server";
+import { getAccessContext, getUserGlobalRoles } from "@/lib/auth/server";
 
 export default async function HomePage() {
   const host = headers().get("host") ?? "";
@@ -13,6 +13,13 @@ export default async function HomePage() {
   }
 
   const access = await getAccessContext(surface, tenantSlug);
+
+  if (access.user) {
+    const globalRoles = await getUserGlobalRoles(access.user.id);
+    if (globalRoles.includes("super_admin")) {
+      redirect("/power");
+    }
+  }
 
   if (!access.user) {
     return (

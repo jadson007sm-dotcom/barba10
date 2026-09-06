@@ -1,16 +1,38 @@
 "use client";
 
-import { FormEvent, Suspense, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
   const searchParams = useSearchParams();
   const bootstrap = searchParams.get("bootstrap") === "1";
+  const nextUrl = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function checkExistingSession() {
+      try {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const res = await fetch("/api/auth/check-role", { cache: "no-store" });
+          if (res.ok) {
+            const body = await res.json();
+            if (body.isSuperAdmin) {
+              window.location.assign("/power");
+            }
+          }
+        }
+      } catch {
+        // ignora
+      }
+    }
+    checkExistingSession();
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -40,14 +62,49 @@ function LoginForm() {
         }
       }
 
-      const { data: isSuperAdmin, error: permissionError } = await (supabase.rpc as any)("has_current_user_super_admin");
+      let isSuperAdmin = false;
 
-      if (permissionError) {
-        setError("A conta foi autenticada, mas não foi possível validar a permissão administrativa.");
-        return;
+      // 1. Tenta RPC dedicada has_current_user_super_admin
+      try {
+        const { data: rpcAdmin, error: rpcError } = await (supabase.rpc as any)("has_current_user_super_admin");
+        if (!rpcError && typeof rpcAdmin === "boolean") {
+          isSuperAdmin = rpcAdmin;
+        }
+      } catch {
+        // segue para o fallback
       }
 
-      window.location.assign(isSuperAdmin ? "/power" : "/");
+      // 2. Fallback: consulta direta à tabela user_global_roles
+      if (!isSuperAdmin) {
+        try {
+          const { data: roleRows } = await supabase
+            .from("user_global_roles")
+            .select("role")
+            .eq("user_id", data.user.id);
+
+          isSuperAdmin = (roleRows as Array<{ role: string }> | null)?.some((row) => row.role === "super_admin") ?? false;
+        } catch {
+          // segue
+        }
+      }
+
+      // 3. Fallback: validação via endpoint server-side
+      if (!isSuperAdmin) {
+        try {
+          const res = await fetch("/api/auth/check-role", { cache: "no-store" });
+          if (res.ok) {
+            const body = await res.json();
+            if (body.isSuperAdmin) {
+              isSuperAdmin = true;
+            }
+          }
+        } catch {
+          // segue
+        }
+      }
+
+      const destination = isSuperAdmin || bootstrap ? "/power" : (nextUrl || "/");
+      window.location.assign(destination);
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {

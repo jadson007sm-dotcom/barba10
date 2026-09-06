@@ -27,7 +27,21 @@ export async function getUserGlobalRoles(userId: string) {
       .select("role")
       .eq("user_id", userId);
 
-    return (data ?? []).map((item) => item.role as string);
+    const roles = (data ?? []).map((item) => item.role as string);
+    if (roles.includes("super_admin")) {
+      return roles;
+    }
+
+    try {
+      const { data: isSuperAdmin } = await (supabase.rpc as any)("has_current_user_super_admin");
+      if (isSuperAdmin === true) {
+        return Array.from(new Set([...roles, "super_admin"]));
+      }
+    } catch {
+      // ignora
+    }
+
+    return roles;
   } catch {
     return [];
   }
