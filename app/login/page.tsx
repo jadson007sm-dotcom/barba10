@@ -1,32 +1,14 @@
 "use client";
 
-import { FormEvent, Suspense, useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { FormEvent, Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    async function checkExistingSession() {
-      try {
-        const supabase = createClient();
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-
-        if (session?.user) {
-          window.location.replace("/power");
-        }
-      } catch {
-        // mantém a tela de login disponível
-      }
-    }
-
-    checkExistingSession();
-  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,26 +16,22 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const supabase = createClient();
-      const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      if (signInError || !data.user) {
-        setError("E-mail ou senha inválidos.");
+      const body = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        setError(body.error ?? "Não foi possível entrar.");
         return;
       }
 
-      try {
-        await (supabase.rpc as any)("claim_first_super_admin");
-      } catch {
-        // segue para o direcionamento
-      }
-
-      // Nesta fase do BARBA10, o destino do login é o Power.
-      // A rota /power faz a autorização definitiva no servidor.
-      window.location.assign("/power");
+      router.replace("/power");
+      router.refresh();
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {
