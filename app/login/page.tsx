@@ -1,13 +1,9 @@
 "use client";
 
 import { FormEvent, Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 function LoginForm() {
-  const searchParams = useSearchParams();
-  const bootstrap = searchParams.get("bootstrap") === "1";
-  const nextUrl = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -17,20 +13,18 @@ function LoginForm() {
     async function checkExistingSession() {
       try {
         const supabase = createClient();
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
         if (session?.user) {
-          const res = await fetch("/api/auth/check-role", { cache: "no-store" });
-          if (res.ok) {
-            const body = await res.json();
-            if (body.isSuperAdmin) {
-              window.location.assign("/power");
-            }
-          }
+          window.location.replace("/power");
         }
       } catch {
-        // ignora
+        // mantém a tela de login disponível
       }
     }
+
     checkExistingSession();
   }, []);
 
@@ -51,59 +45,9 @@ function LoginForm() {
         return;
       }
 
-      if (bootstrap) {
-        const { error: bootstrapError } = await (supabase.rpc as any)("bootstrap_first_super_admin", {
-          p_full_name: (data.user.user_metadata?.full_name as string | undefined) ?? "Super Admin",
-        });
-
-        if (bootstrapError && !bootstrapError.message.toLowerCase().includes("already configured")) {
-          setError("A conta foi autenticada, mas não foi possível concluir a configuração do Super Admin.");
-          return;
-        }
-      }
-
-      let isSuperAdmin = false;
-
-      try {
-        const { data: rpcAdmin, error: rpcError } = await (supabase.rpc as any)("has_current_user_super_admin");
-        if (!rpcError && typeof rpcAdmin === "boolean") {
-          isSuperAdmin = rpcAdmin;
-        }
-      } catch {
-        // segue para o fallback
-      }
-
-      if (!isSuperAdmin) {
-        try {
-          const { data: roleRows } = await supabase
-            .from("user_global_roles")
-            .select("role")
-            .eq("user_id", data.user.id);
-
-          isSuperAdmin = (roleRows as Array<{ role: string }> | null)?.some((row) => row.role === "super_admin") ?? false;
-        } catch {
-          // segue
-        }
-      }
-
-      if (!isSuperAdmin) {
-        try {
-          const res = await fetch("/api/auth/check-role", { cache: "no-store" });
-          if (res.ok) {
-            const body = await res.json();
-            if (body.isSuperAdmin) {
-              isSuperAdmin = true;
-            }
-          }
-        } catch {
-          // segue
-        }
-      }
-
-      // O ambiente atual do BARBA10 é o Power. A própria rota /power
-      // faz a autorização final no servidor e bloqueia perfis sem acesso.
-      const destination = nextUrl || "/power";
-      window.location.assign(destination);
+      // Nesta fase do BARBA10, o destino do login é o Power.
+      // A rota /power faz a autorização definitiva no servidor.
+      window.location.replace("/power");
     } catch {
       setError("Não foi possível concluir o login agora.");
     } finally {
@@ -114,10 +58,8 @@ function LoginForm() {
   return (
     <section className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
       <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#D4AF37]">BARBA10</p>
-      <h1 className="mt-3 text-2xl font-bold">{bootstrap ? "Finalizar configuração do Power" : "Entrar"}</h1>
-      <p className="mt-2 text-sm text-zinc-400">
-        {bootstrap ? "Entre com a conta criada para concluir o primeiro acesso administrativo." : "Acesso seguro à plataforma."}
-      </p>
+      <h1 className="mt-3 text-2xl font-bold">Entrar</h1>
+      <p className="mt-2 text-sm text-zinc-400">Acesso seguro à plataforma.</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <label className="block text-sm">
@@ -151,15 +93,13 @@ function LoginForm() {
           disabled={loading}
           className="w-full rounded-xl bg-[#D4AF37] px-4 py-3 font-semibold text-black transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Entrando..." : bootstrap ? "Concluir configuração" : "Entrar"}
+          {loading ? "Entrando..." : "Entrar"}
         </button>
       </form>
 
-      {!bootstrap ? (
-        <a href="/setup/super-admin" className="mt-5 block text-center text-sm text-zinc-500 hover:text-white">
-          Primeiro acesso: configurar Super Admin
-        </a>
-      ) : null}
+      <a href="/setup/super-admin" className="mt-5 block text-center text-sm text-zinc-500 hover:text-white">
+        Primeiro acesso: configurar Super Admin
+      </a>
     </section>
   );
 }
