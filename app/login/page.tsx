@@ -64,7 +64,6 @@ function LoginForm() {
 
       let isSuperAdmin = false;
 
-      // 1. Tenta RPC dedicada has_current_user_super_admin
       try {
         const { data: rpcAdmin, error: rpcError } = await (supabase.rpc as any)("has_current_user_super_admin");
         if (!rpcError && typeof rpcAdmin === "boolean") {
@@ -74,7 +73,6 @@ function LoginForm() {
         // segue para o fallback
       }
 
-      // 2. Fallback: consulta direta à tabela user_global_roles
       if (!isSuperAdmin) {
         try {
           const { data: roleRows } = await supabase
@@ -88,7 +86,6 @@ function LoginForm() {
         }
       }
 
-      // 3. Fallback: validação via endpoint server-side
       if (!isSuperAdmin) {
         try {
           const res = await fetch("/api/auth/check-role", { cache: "no-store" });
@@ -103,7 +100,9 @@ function LoginForm() {
         }
       }
 
-      const destination = isSuperAdmin || bootstrap ? "/power" : (nextUrl || "/");
+      // O ambiente atual do BARBA10 é o Power. A própria rota /power
+      // faz a autorização final no servidor e bloqueia perfis sem acesso.
+      const destination = nextUrl || "/power";
       window.location.assign(destination);
     } catch {
       setError("Não foi possível concluir o login agora.");
